@@ -21,6 +21,8 @@ Component({
    * 组件的方法列表
    */
   methods: {
-
+    addClick() {
+      this.triggerEvent('addclick', this.data.menuItem)
+    }
   }
 })

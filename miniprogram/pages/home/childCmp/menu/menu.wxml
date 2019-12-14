@@ -2,6 +2,6 @@
 <view class="menu">
   <view class="menu-header">{{ menuData.title }}</view>
   <block wx:for="{{ menuData.items }}" wx:key="id">
-    <menu-item menuItem="{{ item }}"></menu-item>
+    <menu-item menuItem="{{ item }}" bindaddclick="addClick"></menu-item>
   </block>
 </view>

@@ -9,7 +9,7 @@
     <category categoryList="{{ dataList }}" bindcategoryclick="categoryClick"/>
   </scroll-view>
   <scroll-view class="menu-list" style="height: {{scrollViewHeight}}" scroll-y="true">
-    <menu menuData="{{ dataList[currentIndex] }}"/>
+    <menu menuData="{{ dataList[currentIndex] }}" bindaddclick="addFoodToCartList"/>
   </scroll-view>
 </view>
-
+<cart cartList="{{ cartList }}"/>

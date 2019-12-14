@@ -6,7 +6,7 @@
     <view class="sold">已售 {{ menuItem.sold }}</view>
     <view class="bottom">
       <view class="price">¥ {{ menuItem.price }}</view>
-      <image src="/assets/common/add.png"></image>
+      <image src="/assets/common/add.png" bindtap="addClick"></image>
     </view>
   </view>
 </view>

@@ -1,0 +1,28 @@
+/* pages/home/childCmp/cart/cart.wxss */
+.cart {
+  position: fixed;
+  left: 5px;
+  bottom: 0;
+  z-index: 9;
+}
+
+.cart image {
+  width: 44px;
+  height: 44px;
+  position: relative;
+  padding-right: 5px;
+}
+
+.count {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 8px;
+  background-color: red;
+  text-align: center;
+  color: #ffffff;
+  font-size: 10px;
+}
