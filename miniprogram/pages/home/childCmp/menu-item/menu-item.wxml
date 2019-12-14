@@ -1,0 +1,12 @@
+<!--pages/home/childCmp/menu-item/menu-item.wxml-->
+<view class="menu-item">
+  <image class="food-icon" src="{{ menuItem.icon.length ? menuItem.icon : foodIcon }}"></image>
+  <view class="food-info">
+    <view class="title">{{ menuItem.title }}</view>
+    <view class="sold">已售 {{ menuItem.sold }}</view>
+    <view class="bottom">
+      <view class="price">¥ {{ menuItem.price }}</view>
+      <image src="/assets/common/add.png"></image>
+    </view>
+  </view>
+</view>

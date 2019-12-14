@@ -1,0 +1,6 @@
+<!--pages/home/childCmp/category/category.wxml-->
+<view class="category">
+  <block wx:for="{{ categoryList }}" wx:key="id">
+    <view class="title {{index == currentIndex ? 'title-selected' : ''}}" bindtap="categoryClick" data-index="{{index}}">{{ item.title }}</view>
+  </block>
+</view>

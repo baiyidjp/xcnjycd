@@ -1,0 +1,7 @@
+/* pages/home/childCmp/menu/menu.wxss */
+
+.menu-header {
+  height: 30px;
+  line-height: 30px;
+  padding: 0 0 10px 10px;
+}

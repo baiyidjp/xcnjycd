@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/profile/profile"
+  ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "菜单",
+        "iconPath": "/assets/tabbar/menu.png",
+        "selectedIconPath": "/assets/tabbar/menu_selected.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "/assets/tabbar/profile.png",
+        "selectedIconPath": "/assets/tabbar/profile_selected.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "navigation-bar": "/weui-miniprogram/navigation-bar/navigation-bar",
+    "mp-dialog": "/weui-miniprogram/dialog/dialog"
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "乡村农家院菜单",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

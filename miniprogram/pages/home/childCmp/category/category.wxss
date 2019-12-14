@@ -1,0 +1,13 @@
+/* pages/home/childCmp/category/category.wxss */
+.title {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color: #353535;
+}
+
+.title-selected {
+  color: #FFFFFF;
+  font-weight: 700;
+  background-color: #09bb07
+}

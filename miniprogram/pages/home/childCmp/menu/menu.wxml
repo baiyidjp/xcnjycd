@@ -1,0 +1,7 @@
+<!--pages/home/childCmp/menu/menu.wxml-->
+<view class="menu">
+  <view class="menu-header">{{ menuData.title }}</view>
+  <block wx:for="{{ menuData.items }}" wx:key="id">
+    <menu-item menuItem="{{ item }}"></menu-item>
+  </block>
+</view>

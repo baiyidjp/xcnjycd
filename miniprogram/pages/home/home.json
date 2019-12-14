@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "category": "/pages/home/childCmp/category/category",
+    "menu": "/pages/home/childCmp/menu/menu"
+  },
+  "disableScroll": true
+}

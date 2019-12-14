@@ -1,0 +1,15 @@
+<!--miniprogram/pages/home/home.wxml-->
+<navigation-bar title="菜单" back="{{false}}" background="#fafafa"/>
+<view class="logo-info">
+  <image src="/assets/common/logo.jpg"></image>
+  <view>欢迎使用乡村农家院菜单</view>
+</view>
+<view class="menu-info">
+  <scroll-view class="category-list" style="height: {{scrollViewHeight}}" scroll-y="true">
+    <category categoryList="{{ dataList }}" bindcategoryclick="categoryClick"/>
+  </scroll-view>
+  <scroll-view class="menu-list" style="height: {{scrollViewHeight}}" scroll-y="true">
+    <menu menuData="{{ dataList[currentIndex] }}"/>
+  </scroll-view>
+</view>
+

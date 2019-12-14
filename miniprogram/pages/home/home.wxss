@@ -1,0 +1,28 @@
+/* miniprogram/pages/home/home.wxss */
+.logo-info {
+  display: flex;
+  align-items: center;
+  color: #353535;
+  font-size: 17px;
+}
+
+.logo-info image {
+  width: 44px;
+  height: 44px;
+  margin: 16px;
+  border-radius: 22px;
+  border: 1px solid #09bb07
+}
+
+.menu-info {
+  display: flex;
+}
+
+.category-list {
+  width: 20%;
+  background-color: #fafafa
+}
+
+.menu-list {
+  width: 80%;
+}
