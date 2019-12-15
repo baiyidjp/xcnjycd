@@ -11,7 +11,8 @@ Page({
     scrollViewHeight: '0px',
     dataList: [],
     currentIndex: 0,
-    cartList: []
+    cartList: [],
+    isShowCartList: false
   },
 
   /**
@@ -27,10 +28,23 @@ Page({
 
   requestData() {
 
-    menuListCollection.orderBy('id','asc').get().then(res => {
-      const dataList = res.data
-      this.setData({dataList})
-    })
+    // 先查看是否有缓存
+    const dataCache = wx.getStorageSync('menu-list')
+    if (dataCache) {
+      this.setData({
+        dataList: dataCache
+      })
+    } else {
+      menuListCollection.orderBy('id', 'asc').get().then(res => {
+        const dataList = res.data
+        this.setData({ dataList })
+        // 保存数据到本地
+        wx.setStorage({
+          key: 'menu-list',
+          data: dataList,
+        })
+      })
+    }
   },
 
   categoryClick(event) {
@@ -48,15 +62,69 @@ Page({
       const findItem = cartList.find(item => {
         return data.id == item.id
       })
+
+      // 取出列表的对应数据
+      const dataList = this.data.dataList
+      const menuList = dataList[this.data.currentIndex]
+      const findMenuItem = menuList.items.find(item => {
+        return item.id == data.id
+      })
+
       if (findItem) {
         // 存在商品 数量+1
         findItem.count += 1
+        findMenuItem.count += 1
       } else {
         // 不存在 加入购物车
         data.count = 1
+        findMenuItem.count = 1
         cartList.push(data)
       }
       this.setData({ cartList })
+
+      dataList[this.data.currentIndex] = menuList
+      this.setData({dataList})
     }
+  },
+
+  // 移除选中的数量
+  removeFoodFromCartList(event) {
+    const data = event.detail
+    // 是否传过来商品
+    if (data) {
+      // 是否已经存在购物车中
+      const cartList = this.data.cartList
+      const findItem = cartList.find(item => {
+        return data.id == item.id
+      })
+
+      if (findItem) {
+        // 存在商品 数量-1
+        findItem.count -= 1
+
+        // 取出列表的对应数据
+        const dataList = this.data.dataList
+        const menuList = dataList[this.data.currentIndex]
+        const findMenuItem = menuList.items.find(item => {
+          return item.id == findItem.id
+        })
+        // 列表数据 -1
+        findMenuItem.count -= 1
+        dataList[this.data.currentIndex] = menuList
+        this.setData({ dataList })
+
+      }
+      if (findItem.count <= 0) {
+        cartList.splice(cartList.indexOf(findItem), 1)
+      }
+      this.setData({ cartList })
+    }
+  },
+
+  // 点击购物车图标
+  cartClick() {
+    const isShowCartList = !this.data.isShowCartList
+    console.log(isShowCartList)
+    this.setData({isShowCartList})
   }
 })

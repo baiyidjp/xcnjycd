@@ -1,10 +1,10 @@
-// pages/home/childCmp/menu/menu.js
+// pages/home/childCmp/cart-list-item/cart-list-item.js
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    menuData: {
+    item: {
       type: Object,
       value: {}
     }
@@ -21,11 +21,6 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    addClick(event) {
-      this.triggerEvent('addclick', event.detail)
-    },
-    subClick(event) {
-      this.triggerEvent('subclick', event.detail)
-    }
+
   }
 })

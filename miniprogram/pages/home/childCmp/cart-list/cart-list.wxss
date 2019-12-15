@@ -1,0 +1,16 @@
+/* pages/home/childCmp/cart-list/cart-list.wxss */
+.cart-list {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+  background-color: rgba(0, 0, 0, .1);
+  z-index: 9;
+}
+
+.cart-list-scroll {
+  max-height: 300px;
+  position: fixed;
+  bottom: 0;
+  width: 80%;
+}

@@ -1,9 +1,13 @@
 /* pages/home/childCmp/cart/cart.wxss */
 .cart {
   position: fixed;
-  left: 5px;
+  left: 0;
   bottom: 0;
   z-index: 9;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cart image {
@@ -25,4 +29,10 @@
   text-align: center;
   color: #ffffff;
   font-size: 10px;
+}
+
+.list-info {
+  height: 100px;
+  width: 80%;
+  background-color: #fff000
 }

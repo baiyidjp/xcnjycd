@@ -1,5 +1,5 @@
 <!--pages/home/childCmp/cart/cart.wxml-->
-<view class="cart">
+<view class="cart" bindtap="cartClick">
   <image src="{{ cartIcon }}">
     <view class="count" wx:if="{{ cartCount > 0 }}">{{ cartCount }}</view>
   </image>

@@ -6,7 +6,11 @@
     <view class="sold">已售 {{ menuItem.sold }}</view>
     <view class="bottom">
       <view class="price">¥ {{ menuItem.price }}</view>
-      <image src="/assets/common/add.png" bindtap="addClick"></image>
+      <view class="count-info">
+        <image wx:if="{{ chooseCount > 0 }}" src="/assets/common/sub.png" bindtap="subClick"></image>
+        <view wx:if="{{ chooseCount > 0 }}" class="count">{{ chooseCount }}</view>
+        <image src="/assets/common/add.png" bindtap="addClick"></image>
+      </view>
     </view>
   </view>
 </view>

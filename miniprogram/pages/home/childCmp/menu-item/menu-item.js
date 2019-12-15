@@ -6,7 +6,16 @@ Component({
   properties: {
     menuItem: {
       type: Object,
-      value: {}
+      value: {},
+      observer: function (newVal, oldVal) {
+        // 监听数据 count
+        if (newVal.count >= 0) {
+          this.setData({
+            chooseCount: newVal.count
+          })
+          console.log(newVal.title, newVal.count)
+        }
+      }
     }
   },
 
@@ -14,7 +23,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    foodIcon: '/assets/common/food_placeholder.png'
+    foodIcon: '/assets/common/food_placeholder.png',
+    chooseCount: 0
   },
 
   /**
@@ -22,7 +32,13 @@ Component({
    */
   methods: {
     addClick() {
-      this.triggerEvent('addclick', this.data.menuItem)
+      const item = this.data.menuItem
+      this.triggerEvent('addclick', item)
+    },
+
+    subClick() {
+      const item = this.data.menuItem
+      this.triggerEvent('subclick', item)
     }
   }
 })

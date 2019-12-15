@@ -1,0 +1,8 @@
+<!--pages/home/childCmp/cart-list/cart-list.wxml-->
+<view class="cart-list" style="height: {{viewHeight}}">
+  <scroll-view class="cart-list-scroll" scroll-y="true">
+    <block wx:for="{{ cartList }}" wx:key="id">
+      <cart-list-item item="{{item}}"/>
+    </block>
+  </scroll-view>
+</view>

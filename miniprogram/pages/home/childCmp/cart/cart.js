@@ -40,7 +40,13 @@ Component({
         cartIcon
       })
 
-    }
+    },
 
+    // 点击购物车
+    cartClick() {
+      if (this.data.cartCount > 0) {
+        this.triggerEvent('cartclick')
+      }
+    }
   }
 })

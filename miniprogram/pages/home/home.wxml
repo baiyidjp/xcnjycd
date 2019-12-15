@@ -9,7 +9,8 @@
     <category categoryList="{{ dataList }}" bindcategoryclick="categoryClick"/>
   </scroll-view>
   <scroll-view class="menu-list" style="height: {{scrollViewHeight}}" scroll-y="true">
-    <menu menuData="{{ dataList[currentIndex] }}" bindaddclick="addFoodToCartList"/>
+    <menu menuData="{{ dataList[currentIndex] }}" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList"/>
   </scroll-view>
 </view>
-<cart cartList="{{ cartList }}"/>
+<cart cartList="{{ cartList }}" bindcartclick="cartClick"/>
+<cart-list wx:if="{{ isShowCartList }}" cartList="{{ cartList }}"/>
