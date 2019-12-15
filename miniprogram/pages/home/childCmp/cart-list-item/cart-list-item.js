@@ -21,6 +21,14 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    addClick() {
+      const item = this.data.item
+      this.triggerEvent('addclick', item)
+    },
 
+    subClick() {
+      const item = this.data.item
+      this.triggerEvent('subclick', item)
+    }
   }
 })

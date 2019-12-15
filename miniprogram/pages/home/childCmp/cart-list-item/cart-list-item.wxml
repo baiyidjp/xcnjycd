@@ -6,9 +6,9 @@
     <view class="bottom">
       <view class="price">¥ {{ item.price }}</view>
       <view class="count-info">
-        <image wx:if="{{ item.count > 0 }}" src="/assets/common/sub.png" bindtap="subClick"></image>
+        <image wx:if="{{ item.count > 0 }}" src="/assets/common/sub.png" catchtap="subClick"></image>
         <view wx:if="{{ item.count > 0 }}" class="count">{{ item.count }}</view>
-        <image src="/assets/common/add.png" bindtap="addClick"></image>
+        <image src="/assets/common/add.png" catchtap="addClick"></image>
       </view>
     </view>
   </view>

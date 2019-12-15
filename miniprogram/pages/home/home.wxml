@@ -13,4 +13,4 @@
   </scroll-view>
 </view>
 <cart cartList="{{ cartList }}" bindcartclick="cartClick"/>
-<cart-list wx:if="{{ isShowCartList }}" cartList="{{ cartList }}"/>
+<cart-list wx:if="{{ isShowCartList }}" cartList="{{ cartList }}" bindbackclick="cartClick" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList"/>

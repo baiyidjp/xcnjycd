@@ -6,7 +6,11 @@ Component({
   properties: {
     cartList: {
       type: Array,
-      value: []
+      value: [],
+      observer: function (newVal, oldVal) {
+        // 属性值变化时执行
+        this.getTotalPrice()
+      }
     }
   },
 
@@ -14,7 +18,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    viewHeight: 0
+    viewHeight: 0,
+    totalPrice: 0
   },
 
   lifetimes: {
@@ -31,5 +36,25 @@ Component({
    */
   methods: {
 
+    getTotalPrice() {
+      const totalPrice = this.data.cartList.reduce((oldValue, newValue) => {
+        return oldValue + newValue.count * newValue.price
+      }, 0)
+
+      this.setData({
+        totalPrice
+      })
+    },
+
+    backClick() {
+      this.triggerEvent('backclick')
+    },
+
+    addClick(event) {
+      this.triggerEvent('addclick', event.detail)
+    },
+    subClick(event) {
+      this.triggerEvent('subclick', event.detail)
+    }
   }
 })

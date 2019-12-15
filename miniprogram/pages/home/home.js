@@ -1,6 +1,7 @@
 // miniprogram/pages/home/home.js
 
 const menuListCollection = wx.cloud.database().collection('menu_list')
+const flagListCollection = wx.cloud.database().collection('flag_list')
 
 Page({
 
@@ -34,17 +35,31 @@ Page({
       this.setData({
         dataList: dataCache
       })
-    } else {
-      menuListCollection.orderBy('id', 'asc').get().then(res => {
-        const dataList = res.data
-        this.setData({ dataList })
-        // 保存数据到本地
-        wx.setStorage({
-          key: 'menu-list',
-          data: dataList,
-        })
+      // 是否需要刷新缓存数据
+      flagListCollection.get().then(res => {
+        if (res.data.length > 0) {
+          const flag_list = res.data[0]
+          if (flag_list.isRequestMenuList) {
+            this.getLatestData()
+          }
+        }
       })
+    } else {
+      this.getLatestData()
     }
+  },
+
+  // 获取最新的数据
+  getLatestData() {
+    menuListCollection.orderBy('id', 'asc').get().then(res => {
+      const dataList = res.data
+      this.setData({ dataList })
+      // 保存数据到本地
+      wx.setStorage({
+        key: 'menu-list',
+        data: dataList,
+      })
+    })
   },
 
   categoryClick(event) {
