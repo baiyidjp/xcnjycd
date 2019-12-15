@@ -54,6 +54,54 @@ Component({
     },
     subClick(event) {
       this.triggerEvent('subclick', event.detail)
+    },
+
+    submitClick() {
+      wx.requestSubscribeMessage({
+        tmplIds: ['hYtLok-Zolqoz1Nd9iTM9jB7Ksrik1hLrmUYeZeAEEY'],
+        success(res) {
+          console.log('订阅成功')
+        }
+      })
+
+      let menuName = this.data.cartList.reduce((oldValue, newValue) => {
+        return oldValue + newValue.title + '*' + newValue.count + ', '
+      }, '')
+      menuName = menuName.substring(0, menuName.length - 2)
+      if (menuName.length > 20) {
+        menuName = menuName.substring(0, 19)
+      }
+      console.log(menuName)
+      const message = {
+        touser: 'oqia25M2AS3evEc0GfI3OoHxeQtM',
+        page: '/pages/home/home',
+        data: {
+          // 台号
+          thing2: {
+            value: '前台'
+          },
+          // 菜品
+          thing3: {
+            value: menuName
+          },
+          // 价格
+          amount4: {
+            value: this.data.totalPrice
+          }
+        },
+        templateId: 'hYtLok-Zolqoz1Nd9iTM9jB7Ksrik1hLrmUYeZeAEEY'
+      }
+
+      wx.cloud.callFunction({
+        name: 'send-message',
+        data: {
+          message
+        }
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 })

@@ -132,8 +132,10 @@ Page({
       } else {
         // 不存在 加入购物车
         data.count = 1
-        findMenuItem.count = 1
         cartList.push(data)
+        if (findMenuItem) {
+          findMenuItem.count = 1
+        }
       }
       this.setData({ cartList })
 

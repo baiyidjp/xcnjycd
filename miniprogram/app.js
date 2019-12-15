@@ -23,8 +23,7 @@ App({
     this.initSystemInfo()
 
     // openid
-    // this.getUserIdsInfo()
-
+    this.getUserIdsInfo()
   },
 
   // 封装toast
@@ -71,27 +70,27 @@ App({
     wx.jp.windowHeight = systemInfo.windowHeight
   },
 
-  // getUserIdsInfo() {
+  getUserIdsInfo() {
 
-  //   const userIds = wx.getStorageSync('userIds')
-  //   if (userIds) {
-  //     wx.jp.ids = userIds
-  //     console.log(wx.jp.ids)
-  //   } else {
-  //     wx.cloud.callFunction({
-  //       name: 'login'
-  //     }).then(res => {
-  //       wx.jp.ids = {
-  //         openid: res.result.openid,
-  //         appid: res.result.appid,
-  //         unionid: res.result.unionid
-  //       }
-  //       console.log(wx.jp.ids)
-  //       wx.setStorage({
-  //         key: 'userIds',
-  //         data: wx.jp.ids,
-  //       })
-  //     })
-  //   }
-  // }
+    const userIds = wx.getStorageSync('userIds')
+    if (userIds) {
+      wx.jp.ids = userIds
+      console.log(wx.jp.ids)
+    } else {
+      wx.cloud.callFunction({
+        name: 'login'
+      }).then(res => {
+        wx.jp.ids = {
+          openid: res.result.openid,
+          appid: res.result.appid,
+          unionid: res.result.unionid
+        }
+        console.log(wx.jp.ids)
+        wx.setStorage({
+          key: 'userIds',
+          data: wx.jp.ids,
+        })
+      })
+    }
+  }
 })

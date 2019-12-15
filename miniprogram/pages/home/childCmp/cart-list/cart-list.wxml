@@ -10,6 +10,6 @@
       <view>总价: </view>
       <view class="price">¥ {{totalPrice}}</view>
     </view>
-    <view class="submit">提交</view>
+    <view class="submit" bindtap="submitClick">提交</view>
   </view>
 </view>
