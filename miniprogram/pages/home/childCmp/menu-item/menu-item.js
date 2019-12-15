@@ -13,7 +13,6 @@ Component({
           this.setData({
             chooseCount: newVal.count
           })
-          console.log(newVal.title, newVal.count)
         }
       }
     }

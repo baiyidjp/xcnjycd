@@ -26,7 +26,6 @@ Component({
     attached: function () {
       // 在组件实例进入页面节点树时执行
       const viewHeight = `${wx.jp.windowHeight - wx.jp.navigationBarHeight}px`
-      console.log(viewHeight);
       this.setData({viewHeight})
     }
   },

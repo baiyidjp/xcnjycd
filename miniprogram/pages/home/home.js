@@ -29,24 +29,14 @@ Page({
 
   requestData() {
 
-    // 先查看是否有缓存
-    const dataCache = wx.getStorageSync('menu-list')
-    if (dataCache) {
-      this.setData({
-        dataList: dataCache
-      })
-      // 是否需要刷新缓存数据
-      flagListCollection.get().then(res => {
-        if (res.data.length > 0) {
-          const flag_list = res.data[0]
-          if (flag_list.isRequestMenuList) {
-            this.getLatestData()
-          }
-        }
-      })
-    } else {
-      this.getLatestData()
-    }
+    // 是否有新的数据需要更新
+    this.getFlagList().then(isRefreshData => {
+      if (isRefreshData) {
+        this.getLatestData()
+      } else {
+        this.getCacheData()
+      }
+    })
   },
 
   // 获取最新的数据
@@ -58,6 +48,56 @@ Page({
       wx.setStorage({
         key: 'menu-list',
         data: dataList,
+      })
+    })
+  },
+
+  // 获取缓存数据
+  getCacheData() {
+    // 先查看是否有缓存
+    const dataCache = wx.getStorageSync('menu-list')
+    if (dataCache) {
+      this.setData({
+        dataList: dataCache
+      })
+    } else {
+      this.getLatestData()
+    }
+  },
+
+  // 获取一些标识
+  getFlagList() {
+    const flagListCache = wx.getStorageSync('flag-list')
+    return new Promise(resolve => {
+      flagListCollection.get({
+        success: res => {
+          if (res.data.length > 0) {
+            const flag_list = res.data[0]
+            if (flagListCache) {
+              if (flag_list.menuListVersion > flagListCache.menuListVersion) {
+                // 有新版本数据 更新并保存
+                resolve(true)
+                wx.setStorage({
+                  key: 'flag-list',
+                  data: flag_list,
+                })
+              } else {
+                // 版本一致  不需要更新
+                resolve(false)
+              }
+            } else {
+              // 没有flag的缓存 需要更新数据
+              resolve(true)
+              wx.setStorage({
+                key: 'flag-list',
+                data: flag_list,
+              })
+            }
+          }
+        },
+        fail: err => {
+          resolve(false)
+        }
       })
     })
   },
@@ -133,13 +173,20 @@ Page({
         cartList.splice(cartList.indexOf(findItem), 1)
       }
       this.setData({ cartList })
+
+      // 如果购物车被清空 则隐藏购物车列表
+      if (cartList.length <= 0) {
+        this.setData({
+          isShowCartList: false
+        })
+      }
+
     }
   },
 
   // 点击购物车图标
   cartClick() {
     const isShowCartList = !this.data.isShowCartList
-    console.log(isShowCartList)
     this.setData({isShowCartList})
   }
 })
