@@ -1,13 +1,20 @@
 {
   "pages": [
     "pages/home/home",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/order-list/order-list"
   ],
   "tabBar": {
     "list": [
       {
         "pagePath": "pages/home/home",
         "text": "菜单",
+        "iconPath": "/assets/tabbar/menu.png",
+        "selectedIconPath": "/assets/tabbar/menu_selected.png"
+      },
+      {
+        "pagePath": "pages/order-list/order-list",
+        "text": "订单",
         "iconPath": "/assets/tabbar/menu.png",
         "selectedIconPath": "/assets/tabbar/menu_selected.png"
       },

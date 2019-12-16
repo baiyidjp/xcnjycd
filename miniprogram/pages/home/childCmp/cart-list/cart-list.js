@@ -69,9 +69,9 @@ Component({
       }, '')
       menuName = menuName.substring(0, menuName.length - 2)
       if (menuName.length > 20) {
+        // 字符串最多20字
         menuName = menuName.substring(0, 19)
       }
-      console.log(menuName)
       const message = {
         touser: 'oqia25M2AS3evEc0GfI3OoHxeQtM',
         page: '/pages/home/home',
@@ -91,7 +91,7 @@ Component({
         },
         templateId: 'hYtLok-Zolqoz1Nd9iTM9jB7Ksrik1hLrmUYeZeAEEY'
       }
-
+      console.log(message)
       wx.cloud.callFunction({
         name: 'send-message',
         data: {
@@ -99,8 +99,12 @@ Component({
         }
       }).then(res => {
         console.log(res)
+        // 提交成功 清空购物车
+        wx.jp.toast('订单提交成功')
+        this.triggerEvent('submitclick')
       }).catch(err => {
         console.log(err)
+        wx.jp.toast('订单提交失败')
       })
     }
   }

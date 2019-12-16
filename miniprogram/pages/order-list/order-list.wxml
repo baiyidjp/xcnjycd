@@ -1,0 +1,2 @@
+<!--pages/order-list/order-list.wxml-->
+<navigation-bar title="订单列表" back="{{false}}" background="#fafafa"/>

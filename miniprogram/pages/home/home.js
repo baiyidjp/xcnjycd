@@ -190,5 +190,12 @@ Page({
   cartClick() {
     const isShowCartList = !this.data.isShowCartList
     this.setData({isShowCartList})
+  },
+
+  submitClick() {
+    this.setData({
+      isShowCartList: false,
+      cartList: [] 
+    })
   }
 })
