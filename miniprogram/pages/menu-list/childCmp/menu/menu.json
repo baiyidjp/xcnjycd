@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "menu-item": "/pages/menu-list/childCmp/menu-item/menu-item"
+  }
+}

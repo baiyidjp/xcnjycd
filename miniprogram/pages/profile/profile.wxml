@@ -1,3 +1,2 @@
 <!--pages/profile/profile.wxml-->
-<navigation-bar title="我的" back="{{false}}"/>
-<text>pages/profile/profile.wxml</text>
+<mp-navigation-bar title="我的" back="{{false}}"/>

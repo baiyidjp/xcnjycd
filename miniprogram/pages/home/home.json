@@ -1,9 +1,4 @@
 {
-  "usingComponents": {
-    "category": "/pages/home/childCmp/category/category",
-    "menu": "/pages/home/childCmp/menu/menu",
-    "cart": "/pages/home/childCmp/cart/cart",
-    "cart-list": "/pages/home/childCmp/cart-list/cart-list"
-  },
+  "usingComponents": {},
   "disableScroll": true
 }

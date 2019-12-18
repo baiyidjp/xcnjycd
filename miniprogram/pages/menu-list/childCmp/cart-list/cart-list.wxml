@@ -1,0 +1,21 @@
+<!--pages/home/childCmp/cart-list/cart-list.wxml-->
+<view class="cart-list" style="height: {{viewHeight}}; bottom: {{bottom}}">
+  <view class="back-view"></view>
+  <view class="cart-list-container" style="height: {{viewHeight}}" bindtap="backClick">
+    <scroll-view class="cart-list-scroll" scroll-y="true" catchtap="catchTap">
+      <block wx:for="{{ cartList }}" wx:key="id">
+        <cart-list-item item="{{item}}" bindaddclick="addClick" bindsubclick="subClick"/>
+      </block>
+    </scroll-view>
+    <view class="total-info" catchtap="catchTap">
+      <view class="total-price">
+        <view>总价: </view>
+        <view class="price">¥ {{totalPrice}}</view>
+      </view>
+      <view class="option-container">
+        <!-- <view class="option-button" bindtap="bookClick">预定</view> -->
+        <view class="option-button" bindtap="orderClick">下单</view>
+      </view>
+    </view>
+  </view>
+</view>

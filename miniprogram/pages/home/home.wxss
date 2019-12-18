@@ -1,9 +1,11 @@
 /* miniprogram/pages/home/home.wxss */
 .logo-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
   color: #353535;
-  font-size: 17px;
+  font-size: 20px;
+  padding-bottom: 20px;
 }
 
 .logo-info image {
@@ -14,15 +16,49 @@
   border: 1px solid #09bb07
 }
 
-.menu-info {
+.room-list {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
-.category-list {
-  width: 20%;
-  background-color: #fafafa
+.room {
+  width: calc((100% - 120px)/2);
+  height: 60;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: #ffffff;
 }
 
-.menu-list {
-  width: 80%;
+.room-back-0 {
+  background-color: #888888;
+}
+
+.room-back-1 {
+  background-color: #09bb07;
+}
+
+.room-back-2 {
+  background-color: #e64340;
+}
+
+.room-name-0 {
+  color: #576b95;
+}
+
+.room-name-1 {
+  color: #ffffff;
+}
+
+.room-name-2 {
+  color: #ffffff;
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 700;
 }

@@ -1,16 +1,18 @@
 <!--miniprogram/pages/home/home.wxml-->
-<navigation-bar title="菜单" back="{{false}}" background="#fafafa"/>
+<mp-navigation-bar title="首页" back="{{false}}" background="#fafafa"/>
 <view class="logo-info">
-  <image src="/assets/common/logo.jpg"></image>
+  <image src="/assets/common/logo.jpg" bindtap="avatarClick"></image>
   <view>欢迎使用乡村农家院菜单</view>
 </view>
-<view class="menu-info">
-  <scroll-view class="category-list" style="height: {{scrollViewHeight}}" scroll-y="true">
-    <category categoryList="{{ dataList }}" bindcategoryclick="categoryClick"/>
-  </scroll-view>
-  <scroll-view class="menu-list" style="height: {{scrollViewHeight}}" scroll-y="true">
-    <menu menuData="{{ dataList[currentIndex] }}" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList"/>
-  </scroll-view>
-</view>
-<cart cartList="{{ cartList }}" bindcartclick="cartClick"/>
-<cart-list wx:if="{{ isShowCartList }}" cartList="{{ cartList }}" bindbackclick="cartClick" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList" bindsubmitclick="submitClick"/>
+<scroll-view class="scroll-view" style="height: {{scrollViewHeight}}" scroll-y="true">
+  <view class="room-list">
+    <block wx:for="{{roomList}}" wx:key="id">
+      <view class="room {{item.backStyle}}" bindtap="roomClick" data-index="{{index}}">
+        <view class="name">{{ item.name }}</view>
+        <view class="status">{{ item.statusString }}</view>
+      </view>
+    </block>
+    <view class="room" wx:if="{{roomList.length % 2 == 1}}"></view>
+  </view>
+</scroll-view>
+

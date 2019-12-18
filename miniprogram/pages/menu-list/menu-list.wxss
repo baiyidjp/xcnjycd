@@ -1,0 +1,14 @@
+/* miniprogram/pages/menu-list/menu-list.wxss */
+
+.menu-info {
+  display: flex;
+}
+
+.category-list {
+  width: 20%;
+  background-color: #fafafa
+}
+
+.menu-list {
+  width: 80%;
+}

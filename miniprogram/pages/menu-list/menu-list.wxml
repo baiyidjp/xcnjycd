@@ -1,0 +1,12 @@
+<!--miniprogram/pages/menu-list/menu-list.wxml-->
+<mp-navigation-bar title="{{room.name}}" background="#fafafa"/>
+<view class="menu-info">
+  <scroll-view class="category-list" style="height: {{scrollViewHeight}}" scroll-y="true">
+    <category categoryList="{{ dataList }}" bindcategoryclick="categoryClick"/>
+  </scroll-view>
+  <scroll-view class="menu-list" style="height: {{scrollViewHeight}}" scroll-y="true">
+    <menu menuData="{{ dataList[currentIndex] }}" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList"/>
+  </scroll-view>
+</view>
+<cart cartList="{{ cartList }}" bindcartclick="cartClick"/>
+<cart-list wx:if="{{ isShowCartList }}" cartList="{{ cartList }}" bindbackclick="cartClick" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList" bindorderclick="orderClick"/>

@@ -20,7 +20,16 @@ Component({
    */
   data: {
     cartCount: 0,
-    cartIcon: ''
+    cartIcon: '',
+    bottom: '0px'
+  },
+
+  lifetimes: {
+    attached: function () {
+      // 在组件实例进入页面节点树时执行
+      const bottom = `${wx.jp.screenHeight >= 812 ? 34 : 0}px`
+      this.setData({ bottom })
+    }
   },
 
   /**

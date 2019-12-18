@@ -2,13 +2,14 @@
   "pages": [
     "pages/home/home",
     "pages/profile/profile",
-    "pages/order-list/order-list"
+    "pages/order-list/order-list",
+    "pages/menu-list/menu-list"
   ],
   "tabBar": {
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "菜单",
+        "text": "首页",
         "iconPath": "/assets/tabbar/menu.png",
         "selectedIconPath": "/assets/tabbar/menu_selected.png"
       },
@@ -27,7 +28,7 @@
     ]
   },
   "usingComponents": {
-    "navigation-bar": "/weui-miniprogram/navigation-bar/navigation-bar",
+    "mp-navigation-bar": "/weui-miniprogram/navigation-bar/navigation-bar",
     "mp-dialog": "/weui-miniprogram/dialog/dialog"
   },
   "window": {

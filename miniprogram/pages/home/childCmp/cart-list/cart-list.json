@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "cart-list-item": "/pages/home/childCmp/cart-list-item/cart-list-item"
-  }
-}

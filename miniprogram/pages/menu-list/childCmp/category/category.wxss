@@ -4,10 +4,12 @@
   line-height: 44px;
   text-align: center;
   color: #353535;
+  font-size: 17px;
 }
 
 .title-selected {
   color: #FFFFFF;
   font-weight: 700;
-  background-color: #09bb07
+  font-size: 20px;
+  background-color: #09bb07;
 }

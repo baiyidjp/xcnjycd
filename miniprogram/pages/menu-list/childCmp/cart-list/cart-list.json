@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "cart-list-item": "/pages/menu-list/childCmp/cart-list-item/cart-list-item"
+  }
+}
