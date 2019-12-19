@@ -1,2 +1,27 @@
 <!--pages/order-list/order-list.wxml-->
 <mp-navigation-bar title="订单列表" back="{{false}}" background="#fafafa"/>
+<scroll-view class="" scroll-y="true" style="height: {{scrollViewHeight}}">
+    <block wx:for="{{orderList}}" wx:for-item="order" wx:key="index">
+        <view class="order" bindtap="orderClick" data-index="{{index}}">
+            <view class="top-info">
+                <image class="food-icon" src="{{ order.menuList[0].icon }}"></image>
+                <view class="room"> {{order.room }}房间</view>
+            </view>
+            <view class="line"></view>
+            <view class="menu-list">
+                <block wx:for="{{order.menus}}" wx:for-item="menu" wx:key="index">
+                    <view class="menu">
+                        <view class="name">{{menu.title}}</view>
+                        <view class="count">x{{menu.count}}</view>
+                    </view>
+                </block>  
+                <view class="menu-price">
+                    <view class="menu-count">共{{order.menuList.length}}件商品,实付</view>
+                    <view class="price">¥{{order.totalPrice}}</view>
+                </view>
+                <view class="bottom-line" wx:if="{{index != orderList.length-1}}"></view>
+            </view>
+        </view>
+    </block>
+</scroll-view>
+  

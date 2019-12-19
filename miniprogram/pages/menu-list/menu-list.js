@@ -276,7 +276,6 @@ Page({
     order.orderCode = orderCode
     order.totalPrice = totalPrice
     order.menuList = this.data.cartList
-    order.openid = wx.jp.ids.openid
     order.room = this.data.room.name
     orderListCollection.add({
       data: order

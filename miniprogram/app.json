@@ -3,7 +3,8 @@
     "pages/home/home",
     "pages/profile/profile",
     "pages/order-list/order-list",
-    "pages/menu-list/menu-list"
+    "pages/menu-list/menu-list",
+    "pages/order-detail/order-detail"
   ],
   "tabBar": {
     "list": [
@@ -16,14 +17,8 @@
       {
         "pagePath": "pages/order-list/order-list",
         "text": "订单",
-        "iconPath": "/assets/tabbar/menu.png",
-        "selectedIconPath": "/assets/tabbar/menu_selected.png"
-      },
-      {
-        "pagePath": "pages/profile/profile",
-        "text": "我的",
-        "iconPath": "/assets/tabbar/profile.png",
-        "selectedIconPath": "/assets/tabbar/profile_selected.png"
+        "iconPath": "/assets/tabbar/order.png",
+        "selectedIconPath": "/assets/tabbar/order_selected.png"
       }
     ]
   },

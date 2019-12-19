@@ -7,9 +7,9 @@
 <scroll-view class="scroll-view" style="height: {{scrollViewHeight}}" scroll-y="true">
   <view class="room-list">
     <block wx:for="{{roomList}}" wx:key="id">
-      <view class="room {{item.backStyle}}" bindtap="roomClick" data-index="{{index}}">
+      <view class="room room-back" bindtap="roomClick" data-index="{{index}}">
         <view class="name">{{ item.name }}</view>
-        <view class="status">{{ item.statusString }}</view>
+        <view class="desc">{{ item.desc }}</view>
       </view>
     </block>
     <view class="room" wx:if="{{roomList.length % 2 == 1}}"></view>

@@ -1,0 +1,2 @@
+<!--miniprogram/pages/order-detail/order-detail.wxml-->
+<mp-navigation-bar title="订单详情" back="{{true}}" background="#fafafa"/>

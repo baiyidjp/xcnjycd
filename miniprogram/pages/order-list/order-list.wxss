@@ -1,1 +1,60 @@
 /* pages/order-list/order-list.wxss */
+
+.order {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-info {
+    display: flex;
+    align-items: center;
+}
+
+.food-icon {
+    margin-left: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.room {
+    color: #353535;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.line {
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-left: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 1px;
+    width: 100%;
+}
+
+.menu {
+    margin-left: 60px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu-price {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.price {
+    margin-right: 20px;
+    color: #353535;
+    font-weight: 700;
+}
+
+.bottom-line {
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    height: 1px;
+    width: 100%;
+}

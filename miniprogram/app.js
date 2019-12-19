@@ -24,6 +24,9 @@ App({
 
     // openid
     this.getUserIdsInfo()
+
+    // admins
+    this.getAdminIds()
   },
 
   // 封装toast
@@ -92,5 +95,23 @@ App({
         })
       })
     }
+  },
+
+  getAdminIds() {
+
+    const adminIdsCache = wx.getStorageSync('adminIds')
+    if (adminIdsCache) {
+      wx.jp.adminIds = adminIdsCache
+    } 
+
+    wx.cloud.database().collection('admin_list').get().then(res => {
+      const adminIds = res.data[0].admins
+      wx.jp.adminIds = adminIds
+      wx.setStorage({
+        key: 'adminIds',
+        data: adminIds,
+      })
+    })
   }
+
 })

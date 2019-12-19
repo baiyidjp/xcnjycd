@@ -46,13 +46,16 @@ Page({
   roomClick(event) {
     const index = event.currentTarget.dataset.index
     const room = this.data.roomList[index]
-    if (room.status == 0) {
-      wx.navigateTo({
-        url: `/pages/menu-list/menu-list?id=${room.id}&name=${room.name}&status=${room.status}&_id=${room._id}`,
-      })
-    } else {
-      wx.jp.toast(`房间${room.statusString}`)
-    }
+    wx.navigateTo({
+      url: `/pages/menu-list/menu-list?id=${room.id}&name=${room.name}&status=${room.status}&_id=${room._id}`,
+    })
+    // if (room.status == 0) {
+    //   wx.navigateTo({
+    //     url: `/pages/menu-list/menu-list?id=${room.id}&name=${room.name}&status=${room.status}&_id=${room._id}`,
+    //   })
+    // } else {
+    //   wx.jp.toast(`房间${room.statusString}`)
+    // }
   },
 
   avatarClick() {
