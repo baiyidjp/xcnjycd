@@ -4,6 +4,8 @@ const flagListCollection = wx.cloud.database().collection('flag_list')
 const orderListCollection = wx.cloud.database().collection('order_list')
 const roomListCollection = wx.cloud.database().collection('room_list')
 
+const util = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -15,7 +17,8 @@ Page({
     dataList: [],
     currentIndex: 0,
     cartList: [],
-    isShowCartList: false
+    isShowCartList: false,
+    isAdmin: false
   },
 
   /**
@@ -23,12 +26,31 @@ Page({
    */
   onLoad: function (options) {
 
-    console.log(options)
-    const scrollViewHeight = `${wx.jp.windowHeight - wx.jp.contentBarHeight}px`
+    const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
+    const scrollViewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
     this.setData({ 
-      scrollViewHeight,
-      room: options
+      scrollViewHeight
     })
+    // 获取房间数据
+    roomListCollection.where({
+      id: parseInt(options.id)
+    }).get().then(res => {
+      const room = res.data[0]
+      this.setData({room})
+    })
+
+    // 判断是否是admin
+    const openid = wx.jp.ids.openid
+    const adminIds = wx.jp.adminIds
+    if (adminIds.find(id => id == openid)) {
+      this.setData({
+        isAdmin: true
+      })
+    } else {
+      this.setData({
+        isAdmin: false
+      })
+    }
 
     this.requestData()
   },
@@ -36,6 +58,7 @@ Page({
   requestData() {
 
     wx.jp.loading()
+
     // 是否有新的数据需要更新
     this.getFlagList().then(isRefreshData => {
       if (isRefreshData) {
@@ -193,7 +216,6 @@ Page({
           isShowCartList: false
         })
       }
-
     }
   },
 
@@ -210,22 +232,22 @@ Page({
     }, '')
     menuName = menuName.substring(0, menuName.length - 2)
     let menuName1 = menuName
-    let menuName2 = '已下单'
+    let menuName2 = '已下单(点击查看详情)'
     if (menuName.length > 20) {
       // 字符串最多20字
       menuName1 = menuName.substring(0, 19)
-      // menuName2 = menuName.substring(19, menuName.length - 2)
     }
-    // 时间戳
-    const timestamp = new Date().getTime()
+    // 时间
+    const orderTime = util.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+    const timeString = util.formatDate(new Date(), 'yyyyMMddhhmmss')
     // 用户的openid
     const openId = wx.jp.ids.openid
     // 订单编号
-    const orderCode = `order${timestamp}${openId}`.substring(0, 30)
+    const orderCode = `${timeString}${util.getRandomIntInclusive(100000,999999)}`
 
     const message = {
       touser: 'oqia25M2AS3evEc0GfI3OoHxeQtM',
-      page: '/pages/home/home',
+      page: `/pages/order-detail/order-detail?orderCode=${orderCode}`,
       data: {
         // 订单编号
         character_string1: {
@@ -258,7 +280,7 @@ Page({
     }).then(res => {
       wx.jp.toast('订单提交成功')
       // 上传订单
-      this.updateOrder(orderCode, event.detail)
+      this.updateOrder(orderCode, event.detail, orderTime)
       // 更新房间状态
       this.updateRoomStatus()
       // 提交成功 清空购物车
@@ -271,12 +293,13 @@ Page({
   },
 
   // 上传订单
-  updateOrder(orderCode, totalPrice) {
+  updateOrder(orderCode, totalPrice, date) {
     const order = {}
     order.orderCode = orderCode
     order.totalPrice = totalPrice
     order.menuList = this.data.cartList
     order.room = this.data.room.name
+    order.date = date
     orderListCollection.add({
       data: order
     }).then(res => {
@@ -314,6 +337,42 @@ Page({
       isShowCartList: false,
       cartList: [],
       dataList
+    })
+  },
+
+  /**
+ * 用户点击右上角分享
+ */
+  onShareAppMessage: function () {
+  },
+
+  // 生成二维码
+  miniCode() {
+
+    wx.jp.loading('获取二维码')
+    wx.cloud.callFunction({
+      name: 'minicode',
+      data: {
+        path: 'pages/menu-list/menu-list?id=' + this.data.room.id,
+        roomNumber: this.data.room.name
+      }
+    }).then(res => {
+      console.log(res.result)
+      const fileID = res.result.fileID
+      return wx.cloud.downloadFile({
+        fileID
+      })
+    }).then(res => {
+      wx.jp.hideLoading()
+      const filePath = res.tempFilePath
+      return wx.saveImageToPhotosAlbum({
+        filePath
+      })
+    }).then(() => {
+      wx.jp.toast('保存成功')
+    }).catch(err => {
+      console.log(err)
+      wx.jp.hideLoading()
     })
   }
 })

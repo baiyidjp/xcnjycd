@@ -1,19 +1,37 @@
 // miniprogram/pages/order-detail/order-detail.js
+
+const util = require('../../utils/util.js')
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    scrollViewHeight: 0,
+    order: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const order = JSON.parse(options.order)
-    console.log(order);
+
+    const scrollViewHeight = `${wx.jp.windowHeight - wx.jp.navigationBarHeight}px`
+    this.setData({scrollViewHeight})
+
+    wx.jp.loading()
+    // const order = JSON.parse(options.order)
+    const orderCode = options.orderCode
+    wx.cloud.database().collection('order_list').where({
+      orderCode
+    }).get().then(res => {      
+      const order = res.data[0]
+      this.setData({order})
+      wx.jp.hideLoading()
+    }).catch(err => {
+      wx.jp.hideLoading()
+    })
     
   },
 

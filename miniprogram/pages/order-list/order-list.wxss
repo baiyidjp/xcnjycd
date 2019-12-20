@@ -18,7 +18,7 @@
 }
 
 .room {
-    color: #353535;
+    color: #09bb07;
     font-size: 20px;
     margin-left: 10px;
 }
@@ -34,16 +34,24 @@
 
 .menu {
     margin-left: 60px;
-    margin-right: 20px;
+    margin-right: 10px;
     display: flex;
     justify-content: space-between;
 }
 
 .menu-price {
+    margin: 10px 0;
+    padding-right: 10px;
     display: flex;
     justify-content: flex-end;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    align-items: center;
+    color: #888888;
+    font-size: 15px;
+}
+
+.menu-price .total-price {
+    margin-left: 5px;
+    color: #e64340;
 }
 
 .price {
@@ -54,7 +62,7 @@
 
 .bottom-line {
     background-color: rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     height: 1px;
     width: 100%;
 }

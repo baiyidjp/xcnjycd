@@ -13,7 +13,7 @@ Page({
  * 生命周期函数--监听页面显示
  */
   onShow: function () {
-    console.log('onShow')
+    // 请求数据
     this.requestData()
   },
 
@@ -27,6 +27,9 @@ Page({
   },
 
   requestData() {
+
+    wx.jp.loading()
+
     const openid = wx.jp.ids.openid
     const adminIds = wx.jp.adminIds
 
@@ -35,6 +38,9 @@ Page({
       wx.cloud.database().collection('order_list').get().then(res => {
         const orderList = res.data
         this.handleOrderList(orderList)
+        wx.jp.hideLoading()
+      }).catch(err => {
+        wx.jp.hideLoading()
       })
     } else {
       // 只能拿到自己的数据
@@ -43,6 +49,9 @@ Page({
       }).get().then(res => {
         const orderList = res.data
         this.handleOrderList(orderList)
+        wx.jp.hideLoading()
+      }).catch(err => {
+        wx.jp.hideLoading()
       })
     }
   },
@@ -62,9 +71,10 @@ Page({
   orderClick(event) {
     const currentIndex = event.currentTarget.dataset.index
     // 将对象转成字符串传递给下一个页面，在下个页面在转成JSON
-    const data = JSON.stringify(this.data.orderList[currentIndex])
+    // const data = JSON.stringify(this.data.orderList[currentIndex])
+    const order = this.data.orderList[currentIndex]
     wx.navigateTo({
-      url: `/pages/order-detail/order-detail?order=${data}`
+      url: `/pages/order-detail/order-detail?orderCode=${order.orderCode}`
     });
     
   },

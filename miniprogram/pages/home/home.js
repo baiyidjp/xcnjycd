@@ -47,7 +47,7 @@ Page({
     const index = event.currentTarget.dataset.index
     const room = this.data.roomList[index]
     wx.navigateTo({
-      url: `/pages/menu-list/menu-list?id=${room.id}&name=${room.name}&status=${room.status}&_id=${room._id}`,
+      url: `/pages/menu-list/menu-list?id=${room.id}`,
     })
     // if (room.status == 0) {
     //   wx.navigateTo({

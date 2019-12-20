@@ -12,3 +12,11 @@
 .menu-list {
   width: 80%;
 }
+
+.mini-code {
+  width: 100%;
+  text-align: center;
+  color: #ff0000;
+  height: 50px;
+  line-height: 50px;
+}

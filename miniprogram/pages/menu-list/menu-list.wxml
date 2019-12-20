@@ -2,6 +2,7 @@
 <mp-navigation-bar title="{{room.name}}" background="#fafafa"/>
 <view class="menu-info">
   <scroll-view class="category-list" style="height: {{scrollViewHeight}}" scroll-y="true">
+    <view class="mini-code" bindtap="miniCode" wx:if="{{isAdmin}}">二维码</view>
     <category categoryList="{{ dataList }}" bindcategoryclick="categoryClick"/>
   </scroll-view>
   <scroll-view class="menu-list" style="height: {{scrollViewHeight}}" scroll-y="true">

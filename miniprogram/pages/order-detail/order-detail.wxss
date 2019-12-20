@@ -1,1 +1,79 @@
 /* miniprogram/pages/order-detail/order-detail.wxss */
+.order-name {
+    color: #09bb07;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+}
+
+.menu {
+    display: flex;
+    padding: 0 10px 10px 10px;
+}
+
+.food-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.food-info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #888888;
+    font-size: 15px;
+}
+
+.food-info .title {
+    color: #353535;
+    font-size: 16px;
+    font-weight: 500;
+}
+.food-info .total-price {
+    color: #576b95;
+    font-size: 16px;
+}
+
+.line {
+    width: calc(100% - 20px);
+    background-color: rgba(0, 0, 0, .1);
+    height: 1px;
+    margin-left: 10px;
+}
+
+.total-info {
+    margin: 10px 0;
+    padding-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #888888;
+    font-size: 15px;
+}
+
+.total-info .total-price {
+    margin-left: 5px;
+    color: #e64340;
+}
+
+.order-info {
+    display: flex;
+    font-size: 15px;
+    padding-top: 5px;
+    margin-left: 10px;
+}
+
+.order-info .title {
+    color: #888888;
+    width: 65px;
+    flex-shrink: 0;
+}
+
+.order-info .content {
+    padding-left: 5px;
+    color: #576b95;
+}

@@ -23,7 +23,7 @@
 }
 
 .room {
-  width: calc((100% - 120px)/2);
+  width: 35%;
   height: 60;
   margin: 15px 0;
   text-align: center;
