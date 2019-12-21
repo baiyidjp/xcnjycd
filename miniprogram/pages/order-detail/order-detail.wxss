@@ -1,11 +1,28 @@
 /* miniprogram/pages/order-detail/order-detail.wxss */
-.order-name {
+
+page {
+  margin-bottom: 20px;
+}
+
+.name-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.room-name {
     color: #09bb07;
     font-size: 20px;
     font-weight: 700;
     text-align: center;
     height: 50px;
     line-height: 50px;
+}
+
+.order-status {
+  color: #888888;
+  font-size: 15px;
+  padding-left: 5px;
 }
 
 .menu {
@@ -20,7 +37,7 @@
 }
 
 .food-info {
-    margin-left: 10px;
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -46,10 +63,8 @@
 }
 
 .total-info {
-    margin: 10px 0;
-    padding-right: 10px;
+    margin: 10px 0 10px 10px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     color: #888888;
     font-size: 15px;
@@ -69,11 +84,35 @@
 
 .order-info .title {
     color: #888888;
-    width: 65px;
+    width: 80px;
     flex-shrink: 0;
 }
 
 .order-info .content {
     padding-left: 5px;
     color: #576b95;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+.button {
+  color: #ffffff;
+  font-size: 17px;
+  width: calc(50% - 20px);
+  height: 44px;
+  line-height: 44px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.cancel {
+  background-color: #e64340;
+}
+
+.done {
+  background-color: #09bb07;
 }

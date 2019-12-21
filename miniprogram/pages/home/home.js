@@ -20,7 +20,10 @@ Page({
 
     const scrollViewHeight = `${wx.jp.windowHeight - wx.jp.navigationBarHeight - 130}px`
     this.setData({scrollViewHeight})
+  },
 
+  onShow: function () {
+    // 请求数据
     this.requestData()
   },
 
@@ -28,11 +31,13 @@ Page({
 
     wx.jp.loading()
     // 获取房间列表
-    roomListCollection.orderBy('id', 'asc').get().then(res => {
-      const roomList = res.data.map(room => {
-        room.backStyle = `room-back-${room.status}`
+    wx.cloud.callFunction({
+      name: 'room-list'
+    }).then(res => {
+      const roomList = res.result.data.map(room => {
+        // 包间的状态 0-没有客人 1-有客人 2-有预定
+        room.roomBack = `room-back-${room.status}`
         room.nameStyle = `room-name-${room.status}`
-        room.statusString = room.status == 0 ? '空包间' : (room.status == 1 ? '已上桌' : '已预订')
         return room
       })
       this.setData({ roomList })
@@ -46,16 +51,13 @@ Page({
   roomClick(event) {
     const index = event.currentTarget.dataset.index
     const room = this.data.roomList[index]
-    wx.navigateTo({
-      url: `/pages/menu-list/menu-list?id=${room.id}`,
-    })
-    // if (room.status == 0) {
-    //   wx.navigateTo({
-    //     url: `/pages/menu-list/menu-list?id=${room.id}&name=${room.name}&status=${room.status}&_id=${room._id}`,
-    //   })
-    // } else {
-    //   wx.jp.toast(`房间${room.statusString}`)
-    // }
+    if (room.status == 0) {
+      wx.navigateTo({
+        url: `/pages/menu-list/menu-list?id=${room.id}`,
+      })
+    } else {
+      wx.jp.toast('房间已有客人,请点击绿色房间')
+    }
   },
 
   avatarClick() {

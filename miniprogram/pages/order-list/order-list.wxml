@@ -5,7 +5,8 @@
         <view class="order" bindtap="orderClick" data-index="{{index}}">
             <view class="top-info">
                 <image class="food-icon" src="{{ order.menuList[0].icon }}"></image>
-                <view class="room">包间:{{order.room }}</view>
+                <view class="room-name">包间:{{order.room.name }}</view>
+                <view class="order-status">({{order.statusString}})</view>
             </view>
             <view class="line"></view>
             <view class="menu-list">
@@ -16,7 +17,7 @@
                     </view>
                 </block>  
                 <view class="menu-price">
-                    <view class="total-count">一共 {{order.menuList.length}} 件商品</view>
+                    <view class="total-count">一共 {{order.menuList.length}} 个菜</view>
                     <view class="total-price">共计: {{order.totalPrice}}元</view>
                 </view>
                 <view class="bottom-line" wx:if="{{index != orderList.length-1}}"></view>

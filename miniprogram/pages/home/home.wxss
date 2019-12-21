@@ -35,16 +35,16 @@
   background-color: #09bb07;
 }
 
-/* .room-back-0 {
-  background-color: #888888;
-}
-
-.room-back-1 {
+.room-back-0 {
   background-color: #09bb07;
 }
 
-.room-back-2 {
+.room-back-1 {
   background-color: #e64340;
+}
+
+.room-back-2 {
+  background-color: #888888;
 }
 
 .room-name-0 {
@@ -57,7 +57,7 @@
 
 .room-name-2 {
   color: #ffffff;
-} */
+}
 
 .name {
   font-size: 17px;

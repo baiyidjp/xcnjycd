@@ -1,29 +1,37 @@
 <!--miniprogram/pages/order-detail/order-detail.wxml-->
 <mp-navigation-bar title="订单详情" back="{{true}}" background="#fafafa"/>
-<view class="order-name">包间: {{order.room}}</view>
-<view class="menu-list">
-    <block wx:for="{{order.menuList}}" wx:for-item="menuItem" wx:key="index">
-        <view class="menu">
-            <image class="food-icon" src="{{ menuItem.icon }}"></image>
-            <view class="food-info">
-                <view class="title">{{ menuItem.title }}</view>
-                <view class="count">数量: {{menuItem.count}}</view>
-                <view class="price">单价: ¥ {{ menuItem.price }}</view>
-                <view class="total-price">总价: ¥ {{ menuItem.price * menuItem.count }}</view>
-            </view>
-        </view>
-    </block>
-</view>
-<view class="line"></view>
-<view class="total-info">
-    <view class="total-count">一共 {{order.menuList.length}} 件商品</view>
-    <view class="total-price">共计: {{order.totalPrice}}元</view>
-</view>
-<view class="order-info">
-    <view class="title">订单号码:</view>
-    <view class="content">{{order.orderCode}}</view>
-</view>
-<view class="order-info">
-    <view class="title">订单时间:</view>
-    <view class="content">{{order.date}}</view>
-</view>
+<scroll-view scroll-y="true" style="height: {{scrollViewHeight}}">
+  <view class="name-info">
+    <view class="room-name">包间: {{order.room.name}}</view>
+    <view class="order-status">({{order.statusString}})</view>
+  </view>
+  <view class="menu-list">
+      <block wx:for="{{order.menuList}}" wx:for-item="menuItem" wx:key="index">
+          <view class="menu">
+              <image class="food-icon" src="{{ menuItem.icon }}"></image>
+              <view class="food-info">
+                  <view class="title">{{ menuItem.title }}</view>
+                  <view class="price">单价: ¥ {{ menuItem.price }}  共{{menuItem.count}}个</view>
+                  <view class="total-price">总价: {{ menuItem.price * menuItem.count }}元</view>
+              </view>
+          </view>
+      </block>
+  </view>
+  <view class="line"></view>
+  <view class="total-info">
+      <view class="total-count">一共 {{order.menuList.length}} 个菜</view>
+      <view class="total-price">共计: {{order.totalPrice}}元</view>
+  </view>
+  <view class="order-info">
+      <view class="title">订单号码:</view>
+      <view class="content">{{order.orderCode}}</view>
+  </view>
+  <view class="order-info">
+      <view class="title">订单时间:</view>
+      <view class="content">{{order.orderDate}}</view>
+  </view>
+  <view class="buttons" wx:if="{{isShowButtons}}">
+    <view class="cancel button" bindtap="buttonClick" data-index="1">取消</view>
+    <view class="done button" bindtap="buttonClick" data-index="2">完成</view>
+  </view>
+</scroll-view>

@@ -22,8 +22,9 @@ Page({
    */
   onLoad: function (options) {
 
-    const scrollViewHeight = `${wx.jp.windowHeight - wx.jp.navigationBarHeight}px`
-    this.setData({scrollViewHeight})
+    const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
+    const scrollViewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
+    this.setData({ scrollViewHeight })
   },
 
   requestData() {
@@ -33,27 +34,22 @@ Page({
     const openid = wx.jp.ids.openid
     const adminIds = wx.jp.adminIds
 
-    if (adminIds.find(id => id == openid)) {
-      // 是admin
-      wx.cloud.database().collection('order_list').get().then(res => {
-        const orderList = res.data
-        this.handleOrderList(orderList)
-        wx.jp.hideLoading()
-      }).catch(err => {
-        wx.jp.hideLoading()
-      })
-    } else {
-      // 只能拿到自己的数据
-      wx.cloud.database().collection('order_list').where({
-        _openid: openid
-      }).get().then(res => {
-        const orderList = res.data
-        this.handleOrderList(orderList)
-        wx.jp.hideLoading()
-      }).catch(err => {
-        wx.jp.hideLoading()
-      })
+    const cloudFuncObj = {
+      name: 'order-list'
     }
+    if (!adminIds.find(id => id == openid)) {
+      // 普通用户
+      cloudFuncObj.data = {openid}
+    } 
+
+    wx.cloud.callFunction(cloudFuncObj).then(res => {
+      const orderList = res.result.data.filter(order => order.menuList.length)
+      this.handleOrderList(orderList)
+      wx.jp.hideLoading()
+    }).catch(err => {
+      wx.jp.hideLoading()
+      console.log(err)
+    })
   },
 
   handleOrderList(orderList) {
@@ -63,6 +59,9 @@ Page({
       } else {
         order.menus = order.menuList
       }
+      // 订单的状态 0-上菜中 1-已取消 2-已完成
+      const statusString = order.status == 0 ? '上菜中' : (order.status == 1 ? '已取消' : '已完成')
+      order.statusString = statusString
       return order
     })
     this.setData({ orderList })
@@ -70,8 +69,7 @@ Page({
 
   orderClick(event) {
     const currentIndex = event.currentTarget.dataset.index
-    // 将对象转成字符串传递给下一个页面，在下个页面在转成JSON
-    // const data = JSON.stringify(this.data.orderList[currentIndex])
+    console.log(currentIndex)
     const order = this.data.orderList[currentIndex]
     wx.navigateTo({
       url: `/pages/order-detail/order-detail?orderCode=${order.orderCode}`

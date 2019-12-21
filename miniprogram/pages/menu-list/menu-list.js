@@ -18,7 +18,13 @@ Page({
     currentIndex: 0,
     cartList: [],
     isShowCartList: false,
-    isAdmin: false
+    isAdmin: false,
+    totalPrice: 0, 
+    orderAlertShow: false,
+    miniCodeAlertShow: false,
+    buttons: [{ text: '取消' }, { text: '确定' }],
+    miniCodeFileID: '',
+    miniCodeTempFilePath: ''
   },
 
   /**
@@ -28,9 +34,7 @@ Page({
 
     const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
     const scrollViewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
-    this.setData({ 
-      scrollViewHeight
-    })
+    this.setData({ scrollViewHeight})
     // 获取房间数据
     roomListCollection.where({
       id: parseInt(options.id)
@@ -227,96 +231,81 @@ Page({
 
   // 下单
   orderClick(event) {
-    let menuName = this.data.cartList.reduce((oldValue, newValue) => {
-      return oldValue + newValue.title + '*' + newValue.count + ', '
-    }, '')
-    menuName = menuName.substring(0, menuName.length - 2)
-    let menuName1 = menuName
-    let menuName2 = '已下单(点击查看详情)'
-    if (menuName.length > 20) {
-      // 字符串最多20字
-      menuName1 = menuName.substring(0, 19)
-    }
-    // 时间
-    const orderTime = util.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-    const timeString = util.formatDate(new Date(), 'yyyyMMddhhmmss')
-    // 用户的openid
-    const openId = wx.jp.ids.openid
-    // 订单编号
-    const orderCode = `${timeString}${util.getRandomIntInclusive(100000,999999)}`
 
-    const message = {
-      touser: 'oqia25M2AS3evEc0GfI3OoHxeQtM',
-      page: `/pages/order-detail/order-detail?orderCode=${orderCode}`,
-      data: {
-        // 订单编号
-        character_string1: {
-          value: orderCode
-        },
-        // 台号
-        thing2: {
-          value: this.data.room.name
-        },
-        // 菜品
-        thing3: {
-          value: menuName1
-        },
-        // 价格
-        amount4: {
-          value: event.detail + '元'
-        },
-        thing5: {
-          value: menuName2
-        }
-      },
-      templateId: 'hYtLok-Zolqoz1Nd9iTM9q3cfV6jF-WhA3WyT5XMyiU'
-    }
-    console.log(message)
-    wx.cloud.callFunction({
-      name: 'send-message',
-      data: {
-        message
-      }
-    }).then(res => {
-      wx.jp.toast('订单提交成功')
-      // 上传订单
-      this.updateOrder(orderCode, event.detail, orderTime)
-      // 更新房间状态
-      this.updateRoomStatus()
-      // 提交成功 清空购物车
-      this.removeCartList()
-
-    }).catch(err => {
-      console.log(err)
-      wx.jp.toast('订单提交失败')
+    // 记录总价 展示弹窗
+    this.setData({
+      orderAlertShow: true,
+      totalPrice: event.detail
     })
   },
 
+  // 弹窗点击
+  tapOrderButton(e) {
+
+    // 设置弹窗消失
+    this.setData({
+      orderAlertShow: false
+    })
+
+    // 判断是否点击了确定
+    if (e.detail.index == '1') {
+
+      // 判断购物车数据是否正常
+      const cartList = this.data.cartList
+      if (cartList.length <= 0) {
+        wx.jp.toast('数据错误,重新选择')
+        this.removeCartList()
+        return
+      }
+      // 时间
+      const date = new Date()
+      const timeString = util.formatDate(date, 'yyyyMMddhhmmss')
+      // 用户的openid
+      const openId = wx.jp.ids.openid
+      // 订单编号
+      const orderCode = `${timeString}${util.getRandomIntInclusive(100000, 999999)}`
+
+      // 上传订单
+      this.updateOrder(orderCode, date).then(res => {
+        wx.jp.toast('订单提交成功')
+        // 发送订阅消息
+        this.sendMessage(orderCode)
+        // 更新房间状态
+        this.updateRoomStatus()
+        // 提交成功 清空购物车
+        this.removeCartList()
+      }).catch(err => {
+        console.log(err)
+        wx.jp.toast('订单提交失败')
+      })
+    }
+  },
+
   // 上传订单
-  updateOrder(orderCode, totalPrice, date) {
+  updateOrder(orderCode, date) {
     const order = {}
     order.orderCode = orderCode
-    order.totalPrice = totalPrice
+    order.totalPrice = this.data.totalPrice
     order.menuList = this.data.cartList
-    order.room = this.data.room.name
-    order.date = date
-    orderListCollection.add({
+    order.room = this.data.room
+    order.date = date.getTime()
+    // 订单的状态 0-上菜中 1-已取消 2-已完成
+    order.status = 0
+    return orderListCollection.add({
       data: order
-    }).then(res => {
-      console.log('下单成功')
-    }).catch(err => {
-      console.log(err)
     })
   },
 
   // 更新房间状态
   updateRoomStatus() {
-    roomListCollection.doc(this.data.room._id).update({
+    wx.cloud.callFunction({
+      name: 'room-status',
       data: {
-        status: 1
+        status: 1,
+        _id: this.data.room._id
       }
     }).then(res => {
-      console.log('房间状态更新成功',res)
+      console.log('房间状态更改成功',1)
     }).catch(err => {
       console.log(err)
     })
@@ -340,6 +329,71 @@ Page({
     })
   },
 
+  // 发送订阅消息
+  sendMessage(orderCode) {
+
+    const cartList = this.data.cartList
+    // 获取订单的信息
+    let menuName1 = cartList[0].title + ` 等共${cartList.length}个菜`
+    let menuName2 = '已下单(点击查看详情)'
+
+    // 组装订阅消息
+    const message = {
+      page: `/pages/order-detail/order-detail?orderCode=${orderCode}`,
+      data: {
+        // 订单编号
+        character_string1: {
+          value: orderCode
+        },
+        // 台号
+        thing2: {
+          value: this.data.room.name
+        },
+        // 菜品
+        thing3: {
+          value: menuName1
+        },
+        // 价格
+        amount4: {
+          value: this.data.totalPrice + '元'
+        },
+        thing5: {
+          value: menuName2
+        }
+      },
+      templateId: 'hYtLok-Zolqoz1Nd9iTM9q3cfV6jF-WhA3WyT5XMyiU'
+    }
+
+    // 循环admin
+    const adminIds = wx.jp.adminIds
+    if (adminIds.length) {
+      for (const adminId of adminIds) {
+        message.touser = adminId
+        this.sendMessageWithCloudFunc(message)
+      }
+    } else {
+      // 写死 ba
+      message.touser = 'oqia25OBQaq1xnaGeLiTaThQkkSw'
+      this.sendMessageWithCloudFunc(message)
+    }
+    
+
+  },
+
+  // 调用云函数发送消息
+  sendMessageWithCloudFunc(message) {
+    console.log(message)
+    wx.cloud.callFunction({
+      name: 'send-message',
+      data: {
+        message
+      },
+      complete: res => {
+        console.log('send-meesage result: ', res)
+      }
+    })
+  },
+
   /**
  * 用户点击右上角分享
  */
@@ -359,20 +413,44 @@ Page({
     }).then(res => {
       console.log(res.result)
       const fileID = res.result.fileID
+      this.setData({
+        miniCodeFileID: fileID
+      })
       return wx.cloud.downloadFile({
         fileID
       })
     }).then(res => {
       wx.jp.hideLoading()
-      const filePath = res.tempFilePath
-      return wx.saveImageToPhotosAlbum({
-        filePath
+      this.setData({
+        miniCodeAlertShow: true,
+        miniCodeTempFilePath: res.tempFilePath
       })
-    }).then(() => {
-      wx.jp.toast('保存成功')
     }).catch(err => {
       console.log(err)
       wx.jp.hideLoading()
     })
+  },
+
+  // 下载图片的确认
+  tapMiniCodeButton(event) {
+    // 设置弹窗消失
+    this.setData({
+      miniCodeAlertShow: false
+    })
+    // 判断是否点击了确定
+    if (event.detail.index == '1') {
+      wx.saveImageToPhotosAlbum({
+        filePath: this.data.miniCodeTempFilePath,
+        success: () => {
+          wx.jp.toast(this.data.room.name + '的二维码保存成功') 
+          wx.cloud.deleteFile({
+            fileList: [this.data.miniCodeFileID]
+          })
+        },
+        fail: err => {
+          console.log(err)  
+        }
+      })
+    }
   }
 })

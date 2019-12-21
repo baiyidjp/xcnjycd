@@ -7,7 +7,7 @@
 <scroll-view class="scroll-view" style="height: {{scrollViewHeight}}" scroll-y="true">
   <view class="room-list">
     <block wx:for="{{roomList}}" wx:key="id">
-      <view class="room room-back" bindtap="roomClick" data-index="{{index}}">
+      <view class="room {{item.roomBack}}" bindtap="roomClick" data-index="{{index}}">
         <view class="name">{{ item.name }}</view>
         <view class="desc">{{ item.desc }}</view>
       </view>

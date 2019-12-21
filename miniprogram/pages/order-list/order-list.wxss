@@ -17,10 +17,16 @@
     border-radius: 5px;
 }
 
-.room {
+.room-name {
     color: #09bb07;
     font-size: 20px;
     margin-left: 10px;
+}
+
+.order-status {
+  color: #888888;
+  font-size: 15px;
+  padding-left: 5px;
 }
 
 .line {

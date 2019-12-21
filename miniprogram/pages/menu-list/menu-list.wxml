@@ -11,3 +11,9 @@
 </view>
 <cart cartList="{{ cartList }}" bindcartclick="cartClick"/>
 <cart-list wx:if="{{ isShowCartList }}" cartList="{{ cartList }}" bindbackclick="cartClick" bindaddclick="addFoodToCartList" bindsubclick="removeFoodFromCartList" bindorderclick="orderClick"/>
+<mp-dialog title="确认下单?" show="{{orderAlertShow}}" bindbuttontap="tapOrderButton" buttons="{{buttons}}">
+    <view>共 {{cartList.length}} 个菜,总计: {{totalPrice}}元</view>
+</mp-dialog>
+<mp-dialog title="下载二维码" show="{{miniCodeAlertShow}}" bindbuttontap="tapMiniCodeButton" buttons="{{buttons}}">
+  <view>{{room.name}}的二维码图片</view>
+</mp-dialog>
