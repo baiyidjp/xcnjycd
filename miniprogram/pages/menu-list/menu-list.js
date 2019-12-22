@@ -6,6 +6,13 @@ const roomListCollection = wx.cloud.database().collection('room_list')
 
 const util = require('../../utils/util.js')
 
+const location_url = 'https://restapi.amap.com/v3/assistant/coordinate/convert?coordsys=gps&key=b68c82c0b447cfd84bbb8dc960179c24&locations='
+
+const fence_url = 'https://restapi.amap.com/v4/geofence/status?key=b68c82c0b447cfd84bbb8dc960179c24&diu=583D2BB0-B19C-4A9A-A600-2A1EB2FB7E39&locations='
+
+const fence_gid = '0910ae70-c2cd-4bac-a4ae-6aee9b8eccbf'
+const locationToast = '检测到您未在饭店,请在饭店下单'
+
 Page({
 
   /**
@@ -232,10 +239,19 @@ Page({
   // 下单
   orderClick(event) {
 
-    // 记录总价 展示弹窗
-    this.setData({
-      orderAlertShow: true,
-      totalPrice: event.detail
+    // 判断是否在饭店周围
+    this.isNearby().then(res => {
+      if (res) {
+        // 记录总价 展示弹窗
+        this.setData({
+          orderAlertShow: true,
+          totalPrice: event.detail
+        })
+      } else {
+        wx.jp.toast(locationToast)
+      }
+    }).catch(err => {
+      console.log(err)
     })
   },
 
@@ -452,5 +468,92 @@ Page({
         }
       })
     }
+  },
+
+  // 判断下单人是否在饭店周围
+  isNearby() {
+    return new Promise((resolve, reject) => {
+      // 先判断用户是否拒绝了
+      wx.getSetting({
+        success: res => {
+          const userLocation = res.authSetting['scope.userLocation']
+          if (userLocation && !userLocation) {
+            wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+            reject('请点击右上角三点,打开设置,允许使用位置')
+          } else {
+            resolve(res)
+          }
+        },
+        fail: err => {
+          console.log(err)
+          reject(err)
+        }
+      })
+    }).then(res => {
+      // 请求位置经纬度
+      return new Promise((resolve, reject) => {
+        wx.getLocation({
+          success: res => {
+            resolve(res)
+          },
+          fail: err => {
+            console.log(err)
+            wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+          }
+        })
+      }).then(res => {
+        const location = `${res.longitude},${res.latitude}`
+        console.log(location)
+        // 转成高德坐标系
+        return new Promise((resolve, reject) => {
+          wx.request({
+            url: location_url + location,
+            success: function (res) {
+              resolve(res)
+            },
+            fail: function (err) {
+              reject(err)
+            }
+          })
+        })
+      }).then(res => {
+        const locations = `${res.data.locations},${parseInt(new Date().getTime() / 1000)}`
+        const url = fence_url + locations
+        console.log(locations)
+        // 使用高德地图判断是否在饭店周围
+        return new Promise((resolve, reject) => {
+          wx.request({
+            url,
+            success: function (res) {
+              resolve(res)
+            },
+            fail: function (err) {
+              reject(err)
+            }
+          })
+        })
+      }).then(res => {
+        console.log(res)
+        const list = res.data.data.fencing_event_list
+        return new Promise((resolve, reject) => {
+          if (list) {
+            const fence = list.find(fence => {
+              return fence.fence_info.fence_gid = fence_gid
+            })
+            if (fence) {
+              const isIn = fence.client_status == 'in'
+              resolve(isIn)
+            } else {
+              wx.jp.toast(locationToast)
+              reject(locationToast)
+            }
+          } else {
+            wx.jp.toast(locationToast)
+            reject(locationToast)
+          }
+        })
+      })
+    })
   }
+
 })

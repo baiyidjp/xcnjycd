@@ -55,7 +55,6 @@ Component({
     },
 
     catchTap() {
-      console.log('阻止事件')
     },
 
     addClick(event) {

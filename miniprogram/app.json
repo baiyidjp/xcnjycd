@@ -34,6 +34,11 @@
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "将用于判断是否在饭店下单,不在饭店无法下单,请点击确定"
+    }
+  },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }
