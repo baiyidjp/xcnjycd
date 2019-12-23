@@ -11,7 +11,8 @@ Page({
     scrollViewHeight: '0px',
     order: {},
     orderDate: '',
-    isShowButtons: true
+    isShowButtons: false,
+    adminIds: wx.jp.adminIds
   },
 
   /**
@@ -42,7 +43,7 @@ Page({
       // 订单的状态 0-上菜中 1-已取消 2-已完成
       const statusString = order.status == 0 ? '上菜中' : (order.status == 1 ? '已取消' : '已完成')
       order.statusString = statusString
-      const isShowButtons = order.status == 0
+      const isShowButtons = (order.status == 0 && this.data.adminIds.find((id => id == wx.jp.ids.openid)))
       this.setData({
         order,
         isShowButtons

@@ -10,7 +10,7 @@ const location_url = 'https://restapi.amap.com/v3/assistant/coordinate/convert?c
 
 const fence_url = 'https://restapi.amap.com/v4/geofence/status?key=b68c82c0b447cfd84bbb8dc960179c24&diu=583D2BB0-B19C-4A9A-A600-2A1EB2FB7E39&locations='
 
-const fence_gid = '0910ae70-c2cd-4bac-a4ae-6aee9b8eccbf'
+const fence_gid = '8691c23e-9c57-4315-8770-3e93132588d8'
 const locationToast = '检测到您未在饭店,请在饭店下单'
 
 Page({
@@ -239,8 +239,10 @@ Page({
   // 下单
   orderClick(event) {
 
+    wx.jp.loading()
     // 判断是否在饭店周围
     this.isNearby().then(res => {
+      wx.jp.hideLoading()
       if (res) {
         // 记录总价 展示弹窗
         this.setData({
@@ -248,10 +250,13 @@ Page({
           totalPrice: event.detail
         })
       } else {
-        wx.jp.toast(locationToast)
+        setTimeout(() => {
+          wx.jp.toast(locationToast)
+        }, 200)
       }
     }).catch(err => {
       console.log(err)
+      wx.jp.hideLoading()
     })
   },
 
@@ -478,7 +483,9 @@ Page({
         success: res => {
           const userLocation = res.authSetting['scope.userLocation']
           if (userLocation && !userLocation) {
-            wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+            setTimeout(() => {
+              wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+            }, 200)
             reject('请点击右上角三点,打开设置,允许使用位置')
           } else {
             resolve(res)
@@ -497,13 +504,15 @@ Page({
             resolve(res)
           },
           fail: err => {
-            console.log(err)
-            wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+            reject(err)
+            setTimeout(() => {
+              wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+            }, 200)
           }
         })
       }).then(res => {
+        console.log(res)
         const location = `${res.longitude},${res.latitude}`
-        console.log(location)
         // 转成高德坐标系
         return new Promise((resolve, reject) => {
           wx.request({
@@ -517,9 +526,10 @@ Page({
           })
         })
       }).then(res => {
+        console.log(res)
         const locations = `${res.data.locations},${parseInt(new Date().getTime() / 1000)}`
         const url = fence_url + locations
-        console.log(locations)
+        console.log(url)
         // 使用高德地图判断是否在饭店周围
         return new Promise((resolve, reject) => {
           wx.request({
@@ -544,12 +554,16 @@ Page({
               const isIn = fence.client_status == 'in'
               resolve(isIn)
             } else {
-              wx.jp.toast(locationToast)
               reject(locationToast)
+              setTimeout(() => {
+                wx.jp.toast(locationToast)
+              }, 200)
             }
           } else {
-            wx.jp.toast(locationToast)
             reject(locationToast)
+            setTimeout(() => {
+              wx.jp.toast(locationToast)
+            }, 200)
           }
         })
       })
