@@ -11,7 +11,8 @@ Page({
     scrollViewHeight: '0px',
     order: {},
     orderDate: '',
-    isShowButtons: false
+    isShowButtons: false,
+    isShareIn: false
   },
 
   /**
@@ -24,6 +25,13 @@ Page({
     this.setData({ scrollViewHeight })
 
     this.requestData(options.orderCode)
+
+    // 判断是否为分享进来的
+    if (options.in == 'share') {
+      this.setData({
+        isShareIn: true
+      })
+    }
   },
 
   requestData(orderCode) {
@@ -36,7 +44,12 @@ Page({
     }
     wx.cloud.callFunction(cloudFuncObj).then(res => {
       console.log(res)
-      const order = res.result.data[0]
+      const orderData = res.result.data
+      if (orderData.length <= 0) {
+        wx._toast.show('数据错误')
+        return
+      }
+      const order = orderData[0]
       const orderDate = util.formatDate(new Date(order.date), 'yyyy-MM-dd hh:mm:ss')
       order.orderDate = orderDate
       // 订单的状态 0-上菜中 1-已取消 2-已完成
@@ -85,6 +98,13 @@ Page({
     }).catch(err => {
       console.log(err)
       wx._load.hide()
+    })
+  },
+
+  homeClick() {
+    console.log('homeClick');
+    wx.switchTab({
+      url: '/pages/home/home'
     })
   },
 

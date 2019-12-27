@@ -4,6 +4,11 @@ page {
   margin-bottom: 20px;
 }
 
+.nav-home {
+  width: 24px;
+  height: 24px;
+}
+
 .name-info {
   display: flex;
   justify-content: center;

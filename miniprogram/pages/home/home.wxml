@@ -1,7 +1,9 @@
 <!--miniprogram/pages/home/home.wxml-->
-<mp-navigation-bar title="首页" back="{{false}}" background="#fafafa"/>
+<mp-navigation-bar title="首页" back="{{false}}" background="#fafafa">
+  <view wx:if="{{isAdmin}}" bindtap="subscribeClick" slot="left" class="nav-left">订阅</view>  
+</mp-navigation-bar>
 <view class="logo-info">
-  <image src="/assets/common/logo.jpg" bindtap="avatarClick"></image>
+  <image src="/assets/common/logo.jpg"></image>
   <view>欢迎使用乡村农家院菜单</view>
 </view>
 <scroll-view class="scroll-view" style="height: {{scrollViewHeight}}" scroll-y="true">

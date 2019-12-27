@@ -47,7 +47,6 @@ export function getLaunchData() {
     console.log('admins:', adminIds)
     // 判断是否是admin
     isAdmin()
-    console.log('isAdmin:', wx._data.isAdmin);
   })
 
   // 全局的load对象
@@ -132,4 +131,5 @@ function isAdmin() {
   } else {
     wx._data.isAdmin = false
   }
+  console.log('isAdmin:', wx._data.isAdmin);
 }

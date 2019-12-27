@@ -67,14 +67,14 @@
 					"id": 2,
 					"name": "pages/order-detail/order-detail",
 					"pathName": "pages/order-detail/order-detail",
-					"query": "orderCode=order1576679532774oqia25M2AS3e",
+					"query": "orderCode=20191226220731253230&in=share",
 					"scene": null
 				},
 				{
 					"id": 3,
 					"name": "pages/menu-list/menu-list",
 					"pathName": "pages/menu-list/menu-list",
-					"query": "id=222",
+					"query": "id=1008&in=share",
 					"scene": null
 				}
 			]

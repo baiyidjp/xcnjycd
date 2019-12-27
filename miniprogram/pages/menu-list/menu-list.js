@@ -25,13 +25,14 @@ Page({
     currentIndex: 0,
     cartList: [],
     isShowCartList: false,
-    isAdmin: wx._data.isAdmin,
+    isAdmin: false,
     totalPrice: 0, 
     orderAlertShow: false,
     miniCodeAlertShow: false,
     buttons: [{ text: '取消' }, { text: '确定' }],
     miniCodeFileID: '',
-    miniCodeTempFilePath: ''
+    miniCodeTempFilePath: '',
+    isShareIn: false
   },
 
   /**
@@ -41,16 +42,33 @@ Page({
 
     const bottom = wx._device.screenHeight >= 812 ? 34 : 0
     const scrollViewHeight = `${wx._device.screenHeight - wx._device.navigationBarHeight - bottom}px`
-    this.setData({ scrollViewHeight})
+    this.setData({ 
+      scrollViewHeight,
+      isAdmin: wx._data.isAdmin
+    })
     // 获取房间数据
     roomListCollection.where({
       id: parseInt(options.id)
     }).get().then(res => {
       const room = res.data[0]
+      if (room.status == 1) {
+        wx._toast.show('当前包间已有客人,请您选择其他包间')
+        // 延迟退出
+        setTimeout(() => {
+          this.homeClick()
+        }, 1500)
+      }
       this.setData({room})
     })
 
     this.requestData()
+
+    // 判断是否为分享进来的
+    if (options.in == 'share') {
+      this.setData({
+        isShareIn: true
+      })
+    }
   },
 
   requestData() {
@@ -345,7 +363,7 @@ Page({
 
     // 组装订阅消息
     const message = {
-      page: `/pages/order-detail/order-detail?orderCode=${orderCode}`,
+      page: `/pages/order-detail/order-detail?orderCode=${orderCode}&in=share`,
       data: {
         // 订单编号
         character_string1: {
@@ -413,7 +431,7 @@ Page({
     wx.cloud.callFunction({
       name: 'minicode',
       data: {
-        path: 'pages/menu-list/menu-list?id=' + this.data.room.id,
+        path: 'pages/menu-list/menu-list?id=' + this.data.room.id + 'in=share',
         roomNumber: this.data.room.name
       }
     }).then(res => {
@@ -552,6 +570,13 @@ Page({
           }
         })
       })
+    })
+  },
+
+  homeClick() {
+    console.log('homeClick');
+    wx.switchTab({
+      url: '/pages/home/home'
     })
   }
 

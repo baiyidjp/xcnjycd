@@ -1,5 +1,10 @@
 /* pages/order-list/order-list.wxss */
 
+.no-data {
+    color: #888888;
+    text-align: center;
+}
+
 .order {
     display: flex;
     flex-direction: column;

@@ -1,5 +1,10 @@
 /* miniprogram/pages/menu-list/menu-list.wxss */
 
+.nav-home {
+  width: 24px;
+  height: 24px;
+}
+
 .menu-info {
   display: flex;
 }

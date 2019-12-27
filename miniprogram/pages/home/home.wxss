@@ -1,4 +1,10 @@
 /* miniprogram/pages/home/home.wxss */
+
+.nav-left {
+  color: #e64340;
+  font-size: 20px;
+}
+
 .logo-info {
   display: flex;
   flex-direction: column;

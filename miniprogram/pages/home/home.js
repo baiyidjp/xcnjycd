@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isAdmin: false,
     scrollViewHeight: '0px',
     roomList: [],
   },
@@ -20,6 +21,13 @@ Page({
 
     const scrollViewHeight = `${wx._device.windowHeight - wx._device.navigationBarHeight - 130}px`
     this.setData({scrollViewHeight})
+
+    // 延迟1秒判断是否是admin,让数据请求完
+    setTimeout(() => {
+      this.setData({
+        isAdmin: wx._data.isAdmin
+      })
+    },1000)
   },
 
   onShow: function () {
@@ -48,6 +56,7 @@ Page({
     })
   },
 
+  // 点击房间
   roomClick(event) {
     const index = event.currentTarget.dataset.index
     const room = this.data.roomList[index]
@@ -56,17 +65,20 @@ Page({
         url: `/pages/menu-list/menu-list?id=${room.id}`,
       })
     } else {
-      wx._toast.show('房间已有客人,请点击绿色房间')
+      wx._toast.show('当前已有客人,请您选择其他房间')
     }
   },
 
-  avatarClick() {
-    // 获取权限
-    if (wx._data.isAdmin) {
+  // 获取订阅消息权限
+  subscribeClick() {
+    if (this.data.isAdmin) {
       wx.requestSubscribeMessage({
         tmplIds: ['hYtLok-Zolqoz1Nd9iTM9q3cfV6jF-WhA3WyT5XMyiU'],
         success(res) {
           wx._toast.show('订阅消息成功')
+        },
+        fail(err) {
+          console.log(err)
         }
       })
     }

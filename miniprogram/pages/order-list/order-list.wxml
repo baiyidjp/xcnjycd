@@ -1,6 +1,7 @@
 <!--pages/order-list/order-list.wxml-->
 <mp-navigation-bar title="订单列表" back="{{false}}" background="#fafafa"/>
-<scroll-view class="" scroll-y="true" style="height: {{scrollViewHeight}}">
+<view wx:if="{{!orderList.length}}" class="no-data" style="height: {{scrollViewHeight}}; line-height: {{scrollViewHeight}}">暂无订单</view>
+<scroll-view wx:if="{{orderList.length}}" class="" scroll-y="true" style="height: {{scrollViewHeight}}">
     <block wx:for="{{orderList}}" wx:for-item="order" wx:key="index">
         <view class="order" bindtap="orderClick" data-index="{{index}}">
             <view class="top-info">
