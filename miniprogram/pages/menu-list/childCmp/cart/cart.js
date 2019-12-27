@@ -27,7 +27,7 @@ Component({
   lifetimes: {
     attached: function () {
       // 在组件实例进入页面节点树时执行
-      const bottom = `${wx.jp.screenHeight >= 812 ? 34 : 0}px`
+      const bottom = `${wx._device.screenHeight >= 812 ? 34 : 0}px`
       this.setData({ bottom })
     }
   },

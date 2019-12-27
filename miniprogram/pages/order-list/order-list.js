@@ -22,32 +22,31 @@ Page({
    */
   onLoad: function (options) {
 
-    const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
-    const scrollViewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
+    const bottom = wx._device.screenHeight >= 812 ? 34 : 0
+    const scrollViewHeight = `${wx._device.screenHeight - wx._device.navigationBarHeight - bottom}px`
     this.setData({ scrollViewHeight })
   },
 
   requestData() {
 
-    wx.jp.loading()
-
-    const openid = wx.jp.ids.openid
-    const adminIds = wx.jp.adminIds
+    wx._load.show()
 
     const cloudFuncObj = {
       name: 'order-list'
     }
-    if (!adminIds.find(id => id == openid)) {
+    if (!wx._data.isAdmin) {
       // 普通用户
-      cloudFuncObj.data = {openid}
+      cloudFuncObj.data = {
+        openid: wx._data.openid
+      }
     } 
 
     wx.cloud.callFunction(cloudFuncObj).then(res => {
       const orderList = res.result.data.filter(order => order.menuList.length)
       this.handleOrderList(orderList)
-      wx.jp.hideLoading()
+      wx._load.hide()
     }).catch(err => {
-      wx.jp.hideLoading()
+      wx._load.hide()
       console.log(err)
     })
   },

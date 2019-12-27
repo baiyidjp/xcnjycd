@@ -11,8 +11,7 @@ Page({
     scrollViewHeight: '0px',
     order: {},
     orderDate: '',
-    isShowButtons: false,
-    adminIds: wx.jp.adminIds
+    isShowButtons: false
   },
 
   /**
@@ -20,15 +19,15 @@ Page({
    */
   onLoad: function (options) {
 
-    const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
-    const scrollViewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
+    const bottom = wx._device.screenHeight >= 812 ? 34 : 0
+    const scrollViewHeight = `${wx._device.screenHeight - wx._device.navigationBarHeight - bottom}px`
     this.setData({ scrollViewHeight })
 
     this.requestData(options.orderCode)
   },
 
   requestData(orderCode) {
-    wx.jp.loading()
+    wx._load.show()
     const cloudFuncObj = {
       name: 'order-list',
       data: {
@@ -43,21 +42,21 @@ Page({
       // 订单的状态 0-上菜中 1-已取消 2-已完成
       const statusString = order.status == 0 ? '上菜中' : (order.status == 1 ? '已取消' : '已完成')
       order.statusString = statusString
-      const isShowButtons = (order.status == 0 && this.data.adminIds.find((id => id == wx.jp.ids.openid)))
+      const isShowButtons = (order.status == 0 && wx._data.isAdmin)
       this.setData({
         order,
         isShowButtons
       })
-      wx.jp.hideLoading()
+      wx._load.hide()
     }).catch(err => {
-      wx.jp.hideLoading()
+      wx._load.hide()
       console.log(err)
     })
   },
 
   // 点击取消按钮
   buttonClick(event) {
-    wx.jp.loading()
+    wx._load.show()
     // 更改订单的状态 1-已取消 2-已完成
     const status = parseInt(event.currentTarget.dataset.index)
     console.log(status,this.data.order._id)
@@ -68,8 +67,8 @@ Page({
         _id: this.data.order._id
       }
     }).then(res => {
-      wx.jp.hideLoading()
-      wx.jp.toast('订单状态更改成功')
+      wx._load.hide()
+      wx._toast.show('订单状态更改成功')
       // 重新刷新数据
       this.requestData(this.data.order.orderCode)
       // 更改房间状态为 0 无人
@@ -85,7 +84,7 @@ Page({
       })
     }).catch(err => {
       console.log(err)
-      wx.jp.hideLoading()
+      wx._load.hide()
     })
   },
 

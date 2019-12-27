@@ -18,7 +18,7 @@ Page({
    */
   onLoad: function (options) {
 
-    const scrollViewHeight = `${wx.jp.windowHeight - wx.jp.navigationBarHeight - 130}px`
+    const scrollViewHeight = `${wx._device.windowHeight - wx._device.navigationBarHeight - 130}px`
     this.setData({scrollViewHeight})
   },
 
@@ -29,7 +29,7 @@ Page({
 
   requestData() {
 
-    wx.jp.loading()
+    wx._load.show()
     // 获取房间列表
     wx.cloud.callFunction({
       name: 'room-list'
@@ -41,10 +41,10 @@ Page({
         return room
       })
       this.setData({ roomList })
-      wx.jp.hideLoading()
+      wx._load.hide()
     }).catch(err => {
       console.log(err)
-      wx.jp.hideLoading()
+      wx._load.hide()
     })
   },
 
@@ -56,20 +56,19 @@ Page({
         url: `/pages/menu-list/menu-list?id=${room.id}`,
       })
     } else {
-      wx.jp.toast('房间已有客人,请点击绿色房间')
+      wx._toast.show('房间已有客人,请点击绿色房间')
     }
   },
 
   avatarClick() {
     // 获取权限
-    if (wx.jp.ids.openid == 'oqia25M2AS3evEc0GfI3OoHxeQtM' || wx.jp.ids.openid == 'oqia25DMJ1PZG8NbBQnF_E3JWpaQ' || wx.jp.ids.openid == 'oqia25IvOfQ9ZoJMoDz3BL9tr1kk') {
+    if (wx._data.isAdmin) {
       wx.requestSubscribeMessage({
         tmplIds: ['hYtLok-Zolqoz1Nd9iTM9q3cfV6jF-WhA3WyT5XMyiU'],
         success(res) {
-          console.log('订阅成功')
+          wx._toast.show('订阅消息成功')
         }
       })
     }
   }
-
 })

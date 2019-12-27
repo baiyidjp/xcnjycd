@@ -26,11 +26,11 @@ Component({
   lifetimes: {
     attached: function () {
       // 在组件实例进入页面节点树时执行
-      const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
+      const bottom = wx._device.screenHeight >= 812 ? 34 : 0
       this.setData({ 
         bottom: bottom + 'px'
       })
-      const viewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
+      const viewHeight = `${wx._device.screenHeight - wx._device.navigationBarHeight - bottom}px`
       this.setData({viewHeight})
     }
   },

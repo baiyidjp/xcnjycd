@@ -25,7 +25,7 @@ Page({
     currentIndex: 0,
     cartList: [],
     isShowCartList: false,
-    isAdmin: false,
+    isAdmin: wx._data.isAdmin,
     totalPrice: 0, 
     orderAlertShow: false,
     miniCodeAlertShow: false,
@@ -39,8 +39,8 @@ Page({
    */
   onLoad: function (options) {
 
-    const bottom = wx.jp.screenHeight >= 812 ? 34 : 0
-    const scrollViewHeight = `${wx.jp.screenHeight - wx.jp.navigationBarHeight - bottom}px`
+    const bottom = wx._device.screenHeight >= 812 ? 34 : 0
+    const scrollViewHeight = `${wx._device.screenHeight - wx._device.navigationBarHeight - bottom}px`
     this.setData({ scrollViewHeight})
     // 获取房间数据
     roomListCollection.where({
@@ -50,25 +50,12 @@ Page({
       this.setData({room})
     })
 
-    // 判断是否是admin
-    const openid = wx.jp.ids.openid
-    const adminIds = wx.jp.adminIds
-    if (adminIds.find(id => id == openid)) {
-      this.setData({
-        isAdmin: true
-      })
-    } else {
-      this.setData({
-        isAdmin: false
-      })
-    }
-
     this.requestData()
   },
 
   requestData() {
 
-    wx.jp.loading()
+    wx._load.show()
 
     // 是否有新的数据需要更新
     this.getFlagList().then(isRefreshData => {
@@ -90,9 +77,9 @@ Page({
         key: 'menu-list',
         data: dataList,
       })
-      wx.jp.hideLoading()
+      wx._load.hide()
     }).catch(() => {
-      wx.jp.hideLoading()
+      wx._load.hide()
     })
   },
 
@@ -104,7 +91,7 @@ Page({
       this.setData({
         dataList: dataCache
       })
-      wx.jp.hideLoading()
+      wx._load.hide()
     } else {
       this.getLatestData()
     }
@@ -239,10 +226,10 @@ Page({
   // 下单
   orderClick(event) {
 
-    wx.jp.loading()
+    wx._load.show()
     // 判断是否在饭店周围
     this.isNearby().then(res => {
-      wx.jp.hideLoading()
+      wx._load.hide()
       if (res) {
         // 记录总价 展示弹窗
         this.setData({
@@ -251,12 +238,12 @@ Page({
         })
       } else {
         setTimeout(() => {
-          wx.jp.toast(locationToast)
+          wx._toast.show(locationToast)
         }, 200)
       }
     }).catch(err => {
       console.log(err)
-      wx.jp.hideLoading()
+      wx._load.hide()
     })
   },
 
@@ -274,21 +261,19 @@ Page({
       // 判断购物车数据是否正常
       const cartList = this.data.cartList
       if (cartList.length <= 0) {
-        wx.jp.toast('数据错误,重新选择')
+        wx._toast.show('数据错误,重新选择')
         this.removeCartList()
         return
       }
       // 时间
       const date = new Date()
       const timeString = util.formatDate(date, 'yyyyMMddhhmmss')
-      // 用户的openid
-      const openId = wx.jp.ids.openid
       // 订单编号
       const orderCode = `${timeString}${util.getRandomIntInclusive(100000, 999999)}`
 
       // 上传订单
       this.updateOrder(orderCode, date).then(res => {
-        wx.jp.toast('订单提交成功')
+        wx._toast.show('订单提交成功')
         // 发送订阅消息
         this.sendMessage(orderCode)
         // 更新房间状态
@@ -297,7 +282,7 @@ Page({
         this.removeCartList()
       }).catch(err => {
         console.log(err)
-        wx.jp.toast('订单提交失败')
+        wx._toast.show('订单提交失败')
       })
     }
   },
@@ -386,7 +371,7 @@ Page({
     }
 
     // 循环admin
-    const adminIds = wx.jp.adminIds
+    const adminIds = wx._data.adminIds
     if (adminIds.length) {
       for (const adminId of adminIds) {
         message.touser = adminId
@@ -424,7 +409,7 @@ Page({
   // 生成二维码
   miniCode() {
 
-    wx.jp.loading('获取二维码')
+    wx._load.show('获取二维码')
     wx.cloud.callFunction({
       name: 'minicode',
       data: {
@@ -441,14 +426,14 @@ Page({
         fileID
       })
     }).then(res => {
-      wx.jp.hideLoading()
+      wx._load.hide()
       this.setData({
         miniCodeAlertShow: true,
         miniCodeTempFilePath: res.tempFilePath
       })
     }).catch(err => {
       console.log(err)
-      wx.jp.hideLoading()
+      wx._load.hide()
     })
   },
 
@@ -463,7 +448,7 @@ Page({
       wx.saveImageToPhotosAlbum({
         filePath: this.data.miniCodeTempFilePath,
         success: () => {
-          wx.jp.toast(this.data.room.name + '的二维码保存成功') 
+          wx._toast.show(this.data.room.name + '的二维码保存成功') 
           wx.cloud.deleteFile({
             fileList: [this.data.miniCodeFileID]
           })
@@ -484,7 +469,7 @@ Page({
           const userLocation = res.authSetting['scope.userLocation']
           if (userLocation && !userLocation) {
             setTimeout(() => {
-              wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+              wx._toast.show('请点击右上角三点,打开设置,允许使用位置')
             }, 200)
             reject('请点击右上角三点,打开设置,允许使用位置')
           } else {
@@ -506,7 +491,7 @@ Page({
           fail: err => {
             reject(err)
             setTimeout(() => {
-              wx.jp.toast('请点击右上角三点,打开设置,允许使用位置')
+              wx._toast.show('请点击右上角三点,打开设置,允许使用位置')
             }, 200)
           }
         })
@@ -556,13 +541,13 @@ Page({
             } else {
               reject(locationToast)
               setTimeout(() => {
-                wx.jp.toast(locationToast)
+                wx._toast.show(locationToast)
               }, 200)
             }
           } else {
             reject(locationToast)
             setTimeout(() => {
-              wx.jp.toast(locationToast)
+              wx._toast.show(locationToast)
             }, 200)
           }
         })
