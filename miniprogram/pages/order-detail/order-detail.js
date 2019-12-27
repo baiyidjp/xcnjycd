@@ -154,6 +154,8 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      path: `/pages/order-detail/order-detail?orderCode=${this.data.order.orderCode}&in=share`,
+    }
   }
 })

@@ -422,6 +422,9 @@ Page({
  * 用户点击右上角分享
  */
   onShareAppMessage: function () {
+    return {
+      path: `pages/menu-list/menu-list?id=${this.data.room.id}&in=share`,
+    }
   },
 
   // 生成二维码
@@ -431,7 +434,7 @@ Page({
     wx.cloud.callFunction({
       name: 'minicode',
       data: {
-        path: 'pages/menu-list/menu-list?id=' + this.data.room.id + 'in=share',
+        path: `pages/menu-list/menu-list?id=${this.data.room.id}&in=share`,
         roomNumber: this.data.room.name
       }
     }).then(res => {
