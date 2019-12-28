@@ -80,6 +80,21 @@ export function getLaunchData() {
       }
   
       wx.showToast(obj)
+    },
+
+    showDelay: (title, success = false, duration = 1500, delay = 200) => {
+
+      const obj = {
+        title: title,
+        duration: duration
+      }
+      if (!success) {
+        obj.icon = 'none'
+      }
+
+      setTimeout(() => {
+        wx.showToast(obj)
+      }, delay)
     }
   }
 
@@ -108,11 +123,14 @@ export function getLaunchData() {
     wx._device.navigationBarHeight = 44 + systemInfo.statusBarHeight
     if (systemInfo.screenHeight >= 812) {
       wx._device.iPhoneX = true
+      wx._device.bottom = 34
     } else {
       wx._device.iPhoneX = false
+      wx._device.bottom = 0
     }
   } else {
     wx._device.iPhoneX = false
+    wx._device.bottom = 0
     wx._device.contentBarHeight = 48
     wx._device.navigationBarHeight = 48 + systemInfo.statusBarHeight
   }

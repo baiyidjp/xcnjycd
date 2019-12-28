@@ -74,7 +74,7 @@
 					"id": 3,
 					"name": "pages/menu-list/menu-list",
 					"pathName": "pages/menu-list/menu-list",
-					"query": "id=1008&in=share",
+					"query": "id=1001&in=share",
 					"scene": null
 				}
 			]
