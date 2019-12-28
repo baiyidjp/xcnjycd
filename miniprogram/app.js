@@ -1,6 +1,6 @@
 //app.js
 
-const launch = require('/managers/launch.js')
+const launchFunc = require('/managers/launchFunc.js')
 
 App({
   onLaunch: function () {
@@ -17,7 +17,7 @@ App({
     this.globalData = {}
   
     // 加载 启动 数据
-    launch.getLaunchData()
+    launchFunc.getLaunchData()
 
   }
 })

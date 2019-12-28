@@ -1,7 +1,6 @@
 // miniprogram/pages/home/home.js
 
-const roomListCollection = wx.cloud.database().collection('room_list')
-const flagListCollection = wx.cloud.database().collection('flag_list')
+const homeFunc = require('../../managers/homeFunc.js')
 
 Page({
 
@@ -19,8 +18,9 @@ Page({
    */
   onLoad: function (options) {
 
-    const scrollViewHeight = `${wx._device.windowHeight - wx._device.navigationBarHeight - 130}px`
-    this.setData({scrollViewHeight})
+    this.setData({
+      scrollViewHeight: homeFunc.getScrollViewHeight()
+    })
 
     // 延迟1秒判断是否是admin,让数据请求完
     setTimeout(() => {
@@ -32,27 +32,9 @@ Page({
 
   onShow: function () {
     // 请求数据
-    this.requestData()
-  },
-
-  requestData() {
-
-    wx._load.show()
-    // 获取房间列表
-    wx.cloud.callFunction({
-      name: 'room-list'
-    }).then(res => {
-      const roomList = res.result.data.map(room => {
-        // 包间的状态 0-没有客人 1-有客人 2-有预定
-        room.roomBack = `room-back-${room.status}`
-        room.nameStyle = `room-name-${room.status}`
-        return room
-      })
+    homeFunc.getHomeListData().then(res => {
+      const roomList = res
       this.setData({ roomList })
-      wx._load.hide()
-    }).catch(err => {
-      console.log(err)
-      wx._load.hide()
     })
   },
 
