@@ -299,7 +299,6 @@ export function uploadOrder(totalPrice, cartList, room) {
   // 判断购物车数据是否正常
   if (cartList.length <= 0) {
     wx._toast.show('数据错误,重新选择')
-    this.removeCartList()
     return
   }
 

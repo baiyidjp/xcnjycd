@@ -88,7 +88,7 @@ export function optionButtonClick(status, order) {
       name: 'room-status',
       data: {
         status: 0,
-        _id: this.data.order.room._id
+        _id: order.room._id
       },
       complete: res => {
         console.log('room-status result: ', res)
