@@ -30,21 +30,21 @@ export function getLaunchData() {
     })
   }
   // 获取 admins
-  const adminIdsCache = wx.getStorageSync('adminIds')
-  if (adminIdsCache) {
-    wx._data.adminIds = adminIdsCache
+  const adminsCache = wx.getStorageSync('admins')
+  if (adminsCache) {
+    wx._data.admins = adminsCache
     // 判断是否是admin
     isAdmin()
   } 
   // admins 数据需要最新的
   wx.cloud.database().collection('admin_list').get().then(res => {
-    const adminIds = res.data[0].admins
-    wx._data.adminIds = adminIds
+    const admins = res.data[0].admins
+    wx._data.admins = admins
     wx.setStorage({
-      key: 'adminIds',
-      data: adminIds,
+      key: 'admins',
+      data: admins,
     })
-    console.log('admins:', adminIds)
+    console.log('admins:', admins)
     // 判断是否是admin
     isAdmin()
   })
@@ -140,8 +140,8 @@ export function getLaunchData() {
 
 function isAdmin() {
   // 判断是否是admin
-  if (wx._data.adminIds && wx._data.openid) {
-    if (wx._data.adminIds.indexOf(wx._data.openid) != -1) {
+  if (wx._data.admins && wx._data.openid) {
+    if (wx._data.admins.indexOf(wx._data.openid) != -1) {
       wx._data.isAdmin = true
     } else {
       wx._data.isAdmin = false

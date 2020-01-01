@@ -55,7 +55,7 @@ Page({
   subscribeClick() {
     if (this.data.isAdmin) {
       wx.requestSubscribeMessage({
-        tmplIds: ['hYtLok-Zolqoz1Nd9iTM9q3cfV6jF-WhA3WyT5XMyiU'],
+        tmplIds: ['sv_YhkOW9GtdMDvfAurl0Qc6RxK3qO58SZ1mN0uGOAU'],
         success(res) {
           wx._toast.show('订阅消息成功')
         },

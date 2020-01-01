@@ -320,49 +320,49 @@ export function uploadOrder(totalPrice, cartList, room) {
     data: order
   }).then(() => {
     // 发送订阅消息
-    sendMessage(orderCode, cartList, room, totalPrice)
+    sendMessage(orderCode, cartList, room, totalPrice, date)
     // 更改包间状态
     updateRoomStatus(room)
   })
 }
 
 // 发送订阅消息 入参: 订单号, 购物车列表, 包间对象, 总价
-function sendMessage(orderCode, cartList, room, totalPrice) {
+function sendMessage(orderCode, cartList, room, totalPrice, orderDate) {
   // 获取订单的信息
-  let menuName1 = cartList[0].title + ` 等共${cartList.length}个菜`
-  let menuName2 = '已下单(点击查看详情)'
+  let menuName = cartList[0].title + ` 等共${cartList.length}个菜`
 
   // 组装订阅消息
   const message = {
     page: `/pages/order-detail/order-detail?orderCode=${orderCode}&in=share`,
     data: {
       // 订单编号
-      character_string1: {
+      number1: {
         value: orderCode
       },
-      // 台号
-      thing2: {
-        value: room.name
-      },
       // 菜品
-      thing3: {
-        value: menuName1
+      thing2: {
+        value: menuName
       },
       // 价格
-      amount4: {
+      amount3: {
         value: totalPrice + '元'
       },
-      thing5: {
-        value: menuName2
+      // 台号
+      thing7: {
+        value: room.name
+      },
+      // 时间
+      time5: {
+        value: util.formatDate(orderDate, 'yyyy-MM-dd hh:mm:ss')
       }
     },
-    templateId: 'hYtLok-Zolqoz1Nd9iTM9q3cfV6jF-WhA3WyT5XMyiU'
+    templateId: 'sv_YhkOW9GtdMDvfAurl0Qc6RxK3qO58SZ1mN0uGOAU'
   }
 
   // 循环admin
-  const adminIds = wx._data.adminIds
-  if (adminIds.length > 0) {
-    for (const adminId of adminIds) {
+  const admins = wx._data.admins
+  if (admins.length > 0) {
+    for (const adminId of admins) {
       message.touser = adminId
       sendMessageWithCloudFunc(message)
     }
